@@ -15,6 +15,7 @@ resource "null_resource" "nginx_conf" {
 
   depends_on = [
     aws_instance.kasm_server[count.index],
+    aws_route53_record.kasm_dns[count.index],
   ]
 
   triggers = {

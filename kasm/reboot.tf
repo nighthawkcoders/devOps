@@ -10,8 +10,6 @@ resource "aws_instance" "reboot_instances" {
   count = length(var.kasm_ec2)
 
   depends_on = [
-    aws_instance.kasm_server[count.index],
-    aws_route53_record.kasm_dns[count.index],
     null_resource.nginx_conf[count.index]
   ]
 
