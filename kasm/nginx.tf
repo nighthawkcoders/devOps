@@ -1,15 +1,3 @@
-# nginx.tf
-
-# Define the template for your nginx configuration
-data "template_file" "nginx_conf_template" {
-  template = file("${path.module}/nginx.conf.tpl")
-
-  vars = {
-    subdomain = replace(var.kasm_ec2[count.index], "\\..*$", "")
-  }
-}
-
-# Create an nginx.conf file using the rendered template
 resource "null_resource" "nginx_conf" {
   count = length(var.kasm_ec2)
 
@@ -33,7 +21,9 @@ resource "null_resource" "nginx_conf" {
 
   provisioner "remote-exec" {
     inline = [
-      "ln -s /etc/nginx/sites-available/${data.template_file.nginx_conf_template.vars.subdomain} /etc/nginx/sites-enabled/"
+      "ln -s /etc/nginx/sites-available/${data.template_file.nginx_conf_template.vars.subdomain} /etc/nginx/sites-enabled/",
+      "sudo systemctl start nginx",
+      "certbot --nginx --noninteractive --agree-tos -m nighthawkcodingsociety@gmail.com -d ${data.template_file.nginx_conf_template.vars.subdomain}.nighthawkcodingsociety.com"
     ]
   }
 }
