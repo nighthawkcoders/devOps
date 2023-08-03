@@ -1,9 +1,10 @@
+# main.tf
 
 provider "aws" {
   region = "us-west-2"
 }
 
-
+# Tool versions
 terraform {
   required_providers {
     aws = {
@@ -15,21 +16,23 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
-provider "aws" {
-  region = "us-west-2"
-}
-
+# Kasm system properties
 resource "aws_instance" "kasm_server" {
+
+  # create a resource 
+  for_each = toset(var.kasm_ec2) # for each member of var.kasm_ec2
+
+  # assign current resource a name from key 
+  tags = {
+    Name = each.key  
+  }
+
   ami           = "ami-04e914639d0cca79a"
-  name          = each.value
-  for_each      = toset(var.kasm_ec2)
   instance_type = "t2.medium"
   key_name      = "Kasm"
 
-  user_data = <<-EOT
-   #!/bin/bash
-   echo "Hello Terraform!"
- EOT
+  # count = length(var.kasm_ec2) # this does not seem to be needed, discuss with Aaron
+
   cpu_options = {
     core_count       = 2
     threads_per_core = 1
@@ -47,7 +50,7 @@ resource "aws_instance" "kasm_server" {
     }
   ]
 
-  tags = {
-    Name = "kasm"
-  }
+  # install Kasm service, after instance is active
+  user_data = file("install_kasm.sh")
+
 }
