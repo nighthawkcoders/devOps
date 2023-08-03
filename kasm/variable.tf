@@ -31,7 +31,7 @@ variable "domain_tag" {
 variable "domain" {
   description = "Full domain name"
   type        = string
-  default     = "${domain_2ld}.com"
+  default     = ""
 }
 
 # derived list for EC2 instances
@@ -39,12 +39,12 @@ variable "kasm_ec2" {
   description = "List of Kasm EC2 instances"
   type        = list(string)
   # list comprehension
-  default     = [for sub in var.subdomain : "${sub}.${var.domain_tag}"]
+  default     = []
 }
 
 # derived list for URLs
 variable "kasm_domain" {
   description = "List of Kasm URLs"
   type        = list(string)
-  default     = [for sub in var.subdomain : "${sub}.${var.domain}"]
+  default     = []
 }

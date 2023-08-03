@@ -1,5 +1,9 @@
 # main.tf
 
+locals {
+  kasm_ec2 = [for sub in var.subdomain : "${sub}.${var.domain_tag}"]
+}
+
 provider "aws" {
   region = "us-west-2"
 }
