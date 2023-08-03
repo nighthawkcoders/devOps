@@ -16,28 +16,29 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
-# Kasm system properties
+# create AWS AMIs
 resource "aws_instance" "kasm_server" {
 
-  # create a resource 
+  # repeat for each var.kasm_ec2
   for_each = toset(var.kasm_ec2) # for each member of var.kasm_ec2
 
-  # assign current resource a name from key 
+  # assign current "each.key" a tag called names
   tags = {
     Name = each.key  
   }
 
+  # AMI key-value properties
   ami           = "ami-04e914639d0cca79a"
   instance_type = "t2.medium"
   key_name      = "Kasm"
 
-  # count = length(var.kasm_ec2) # this does not seem to be needed, discuss with Aaron
-
+  # AMI cpu properties are lists
   cpu_options = {
     core_count       = 2
     threads_per_core = 1
   }
 
+  # AMI storage properties are lists
   ebs_block_device = [
     {
       device_name = "/dev/sdf"
@@ -50,7 +51,14 @@ resource "aws_instance" "kasm_server" {
     }
   ]
 
-  # install Kasm service, after instance is active
+  # For AMI, elastic ip's are an external resource
+  resource "aws_eip" "kasm_eip" {
+    count = length(var.kasm_ec2)
+
+    instance = aws_instance.kasm_server[count.index].id
+  }
+
+  # For AMI, install Kasm resources
   user_data = file("install_kasm.sh")
 
 }
