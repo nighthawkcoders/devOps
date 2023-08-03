@@ -65,6 +65,12 @@ resource "aws_instance" "kasm_server" {
   # For EC2/AMI, install Kasm resources for Ubuntu
   user_data = file("install_kasm.sh")
 
+  # Nginx provisioning
+  provisioner "file" {
+    source      = "nginx.conf"  
+    destination = "/etc/nginx/sites-available/nginx.conf" 
+  }
+
 }
 
 # Security Group for Kasm instances
@@ -97,4 +103,31 @@ resource "aws_security_group" "kasm_sg" {
     description = "Allow HTTPS traffic"
   }
 
+}
+
+# Define the template for your nginx configuration
+data "template_file" "nginx_conf_template" {
+  template = file("${path.module}/nginx.conf.tpl")
+
+  vars = {
+    subdomain = replace(var.kasm_ec2[count.index], "\\..*$", "")
+  }
+}
+
+# Create an nginx.conf file using the rendered template
+resource "null_resource" "nginx_conf" {
+  count = length(var.kasm_ec2)
+
+  triggers = {
+    template = data.template_file.nginx_conf_template.rendered
+  }
+
+  provisioner "local-exec" {
+    command = "echo '${data.template_file.nginx_conf_template.rendered}' > /tmp/nginx.conf.tpl"
+  }
+
+  provisioner "file" {
+    source      = "/tmp/nginx.conf.tpl"
+    destination = "/etc/nginx/sites-available/nginx.conf"
+  }
 }
