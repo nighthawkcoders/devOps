@@ -23,6 +23,12 @@ resource "null_resource" "nginx_conf" {
 
   provisioner "file" {
     source      = "/tmp/nginx.conf.tpl"
-    destination = "/etc/nginx/sites-available/"
+    destination = "/etc/nginx/sites-available/${data.template_file.nginx_conf_template.vars.subdomain}"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "ln -s /etc/nginx/sites-available/${data.template_file.nginx_conf_template.vars.subdomain} /etc/nginx/sites-enabled/"
+    ]
   }
 }
