@@ -59,7 +59,36 @@ resource "aws_instance" "kasm_server" {
     instance = aws_instance.kasm_server[count.index].id
   }
 
+  # Security group
+  vpc_security_group_ids = [aws_security_group.kasm_sg.id]
+
   # For EC2/AMI, install Kasm resources for Ubuntu
   user_data = file("install_kasm.sh")
 
+}
+
+# Security Group for Kasm instances
+resource "aws_security_group" "kasm_sg" {
+  name_prefix = "kasm_sg_"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
