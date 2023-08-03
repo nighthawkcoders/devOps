@@ -20,7 +20,7 @@ terraform {
 resource "aws_instance" "kasm_server" {
 
   # repeat for each var.kasm_ec2
-  for_each = toset(var.kasm_ec2) # for each member of var.kasm_ec2
+  for_each = toset(var.kasm_ec2)
 
   # assign current "each.key" a tag, tags are a list property
   tags = {
@@ -52,7 +52,8 @@ resource "aws_instance" "kasm_server" {
   ]
 
   # For EC2, elastic ip's are an external resource
-  resource "aws_eip" "kasm_eip" {
+  # kasm_eip is elastic ip resources in aws_eip pool
+  resource "aws_eip" "kasm_eip" { 
     count = length(var.kasm_ec2)
 
     instance = aws_instance.kasm_server[count.index].id

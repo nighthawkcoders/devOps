@@ -16,6 +16,6 @@ resource "aws_route53_record" "kasm_dns" {
   name    = replace(var.kasm_ec2[count.index], "\\..*$", "")
   type    = "A"
   ttl     = "300"
-  # sets IP to EC2 instance's Elastic IP
+  # sets IP, count.index obtains kasm.eip resource (elastic ip)
   records = [aws_eip.kasm_eip[count.index].public_ip]
 }
