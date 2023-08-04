@@ -26,9 +26,9 @@ resource "aws_instance" "kasm_server" {
   # repeat for each kasm_ec2
   for_each = toset(local.kasm_ec2)
 
-  # assign current "each.key" a tag
+  # assign "each.key" as a tag
   tags = {
-    Name = each.key  
+    Name = each.key  # Name tags is EC2 console "Name"
   }
 
   # EC2 key-value properties
@@ -66,7 +66,7 @@ resource "aws_eip" "kasm_eip" {
 resource "aws_security_group" "kasm_sg" {
   name_prefix = "kasm_sg_"
 
-  # incoming network traffic rules follow
+  # incoming network traffic rules
   
   ingress {
     from_port   = 22
@@ -92,7 +92,8 @@ resource "aws_security_group" "kasm_sg" {
     description = "Allow HTTPS traffic"
   }
 
-  # Outbound network traffic rules
+  # outbound network traffic rules
+  
   egress {
     from_port   = 0
     to_port     = 0
