@@ -1,13 +1,13 @@
 # network.tf
 
 # define route 53 zone
-resource "aws_route53_zone" "${var.domain_2ld}" {
+resource "aws_route53_zone" "nighthawkcodingsociety" {
   name = "${var.domain}"
 }
 
 # create route 53 A records
 resource "aws_route53_record" "kasm_dns" {
-  # repeat for each subdomain and relate correspondig kasm_eip 
+  # repeat for each subdomain and relate  kasm_eip 
   count = length(var.subdomain)
 
   # set zone

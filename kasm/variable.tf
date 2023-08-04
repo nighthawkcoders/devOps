@@ -2,43 +2,48 @@
 # change subdomain, domain_2ld, domain_tag to meet project needs
 #
 
-# instance or system identifier
 variable "subdomain" {
   description = "List of Kasm EC2 instances"
   type        = list(string)
   default     = ["Kasm2", "Kasm3", "Kasm4"]
 }
 
-# domain marketing name 
+variable "domain_tag" {
+  description = "Abbreviated domain name for tags"
+  type        = string
+  default     = "ncs.com"
+}
+
 variable "domain_2ld" {
   description = "Domain second level description"
   type        = string
   default     = "nighthawkcodingsociety"
 }
 
-# shorter name used in AWS tags, use default = "domain_2ld" if not needed
-variable "domain_tag" {
-  description = "Domain name for tags"
+# full domain name
+variable "domain" {
+  description = "Full domain name"
   type        = string
-  default     = "ncs.com"
+  default     = "nighthawkcodingsociety.com"
 }
+
+# shorter name used in AWS tags, use default = "domain_2ld" if not needed
+variable "email" {
+  description = "Certbot and public facing email"
+  type        = string
+  default     = "nighthawkcodingsociety@gmail.com"
+}
+
 
 #
 # derived names after here, do not change
 #
 
-# full domain name
-variable "domain" {
-  description = "Full domain name"
-  type        = string
-  default     = ""
-}
 
 # derived list for EC2 instances
 variable "kasm_ec2" {
   description = "List of Kasm EC2 instances"
   type        = list(string)
-  # list comprehension
   default     = []
 }
 

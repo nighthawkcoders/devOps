@@ -1,10 +1,11 @@
+# nginx.tf
+
+locals {
+  kasm_domain = [for sub in var.subdomain : "${sub}.${var.domain}"]
+}
+
 resource "null_resource" "nginx_conf" {
   count = length(var.subdomain)
-
-  depends_on = [
-    aws_instance.kasm_server[count.index],
-    aws_route53_record.kasm_dns[count.index],
-  ]
 
   triggers = {
     template = data.template_file.nginx_conf_template.rendered
@@ -23,7 +24,7 @@ resource "null_resource" "nginx_conf" {
     inline = [
       "ln -s /etc/nginx/sites-available/${data.template_file.nginx_conf_template.vars.subdomain} /etc/nginx/sites-enabled/",
       "sudo systemctl start nginx",
-      "certbot --nginx --noninteractive --agree-tos -m nighthawkcodingsociety@gmail.com -d ${var.domain}"
+      "certbot --nginx --noninteractive --agree-tos -m ${var.email} -d ${var.kasm_domain[count.index]}"   
     ]
   }
 }
