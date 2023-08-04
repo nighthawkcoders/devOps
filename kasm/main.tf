@@ -1,9 +1,5 @@
 # main.tf
 
-locals {
-  kasm_ec2 = [for sub in var.subdomain : "${sub}.${var.domain_tag}"]
-}
-
 provider "aws" {
   region = "us-west-2"
 }
@@ -23,12 +19,14 @@ terraform {
 # create AWS EC2 instance
 resource "aws_instance" "kasm_server" {
 
-  # repeat for each kasm_ec2
-  for_each = toset(local.kasm_ec2)
+  for_each = {
+    for instance in var.kasm_instances :
+    instance["ec2_Name"] => instance
+  }
 
-  # assign "each.key" as a tag
   tags = {
-    Name = each.key  # Name tags is EC2 console "Name"
+    Name   = each.value.ec2_Name
+    Domain = each.value.ec2_Domain
   }
 
   # EC2 key-value properties
@@ -54,7 +52,7 @@ resource "aws_instance" "kasm_server" {
 
 }
 
-# Elastic ip's are 
+# Elastic ip's
 resource "aws_eip" "kasm_eip" {
   for_each = aws_instance.kasm_server
 

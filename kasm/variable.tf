@@ -1,12 +1,4 @@
-#
-# change subdomain, domain_2ld, domain_tag to meet project needs
-#
-
-variable "subdomain" {
-  description = "List of Kasm EC2 instances"
-  type        = list(string)
-  default     = ["Kasm2", "Kasm3", "Kasm4"]
-}
+# variable.tf
 
 variable "domain_tag" {
   description = "Abbreviated domain name for tags"
@@ -28,14 +20,22 @@ variable "email" {
   default     = "nighthawkcodingsociety@gmail.com"
 }
 
-
-#
-# derived names after here, do not change
-#
-
-# derived list for EC2 instances
-variable "kasm_ec2" {
-  description = "List of Kasm EC2 instances"
-  type        = list(string)
-  default     = []
+variable "kasm_instances" {
+  description = "List of Kasm EC2 instances along with their corresponding domains"
+  type = list(map(string))
+  default = [
+    {
+      ec2_Name   = "Kasm2.ncs.com"
+      ec2_Domain = "kasm2.nighthawkcodingsociety.com"
+    },
+    {
+      ec2_Name   = "Kasm3.ncs.com"
+      ec2_Domain = "kasm3.nighthawkcodingsociety.com"
+    },
+    {
+      ec2_Name   = "Kasm4.ncs.com"
+      ec2_Domain = "kasm4.nighthawkcodingsociety.com"
+    },
+    # Add more instances as needed
+  ]
 }
