@@ -14,12 +14,6 @@ variable "domain_tag" {
   default     = "ncs.com"
 }
 
-variable "domain_2ld" {
-  description = "Domain second level description"
-  type        = string
-  default     = "nighthawkcodingsociety"
-}
-
 # full domain name
 variable "domain" {
   description = "Full domain name"
@@ -39,17 +33,9 @@ variable "email" {
 # derived names after here, do not change
 #
 
-
 # derived list for EC2 instances
 variable "kasm_ec2" {
   description = "List of Kasm EC2 instances"
-  type        = list(string)
-  default     = []
-}
-
-# derived list for URLs
-variable "kasm_domain" {
-  description = "List of Kasm URLs"
   type        = list(string)
   default     = []
 }

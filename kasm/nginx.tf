@@ -1,9 +1,5 @@
 # nginx.tf
 
-locals {
-  kasm_domain = [for sub in var.subdomain : "${sub}.${var.domain}"]
-}
-
 resource "null_resource" "nginx_conf" {
   count = length(var.subdomain)
 
@@ -24,7 +20,7 @@ resource "null_resource" "nginx_conf" {
     inline = [
       "ln -s /etc/nginx/sites-available/${data.template_file.nginx_conf_template.vars.subdomain} /etc/nginx/sites-enabled/",
       "sudo systemctl start nginx",
-      "certbot --nginx --noninteractive --agree-tos -m ${var.email} -d ${var.kasm_domain[count.index]}"   
+      "certbot --nginx --noninteractive --agree-tos -m ${var.email} -d aws_eip.kasm_eip[count.index].name"   
     ]
   }
 }

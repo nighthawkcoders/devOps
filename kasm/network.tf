@@ -13,7 +13,7 @@ resource "aws_route53_record" "kasm_dns" {
   # set zone
   zone_id = aws_route53_zone.nighthawkcodingsociety.id
   # set subdomain using index
-  name    = "${var.subdomain[count.index]}"
+  name    = "${var.subdomain[count.index]}.${var.domain}"
   type    = "A"
   ttl     = "300"
   # sets IP, uses index of kasm.eip (elastic ip)
