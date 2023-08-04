@@ -26,13 +26,13 @@ resource "aws_instance" "kasm_server" {
   # repeat for each kasm_ec2
   for_each = toset(local.kasm_ec2)
 
-  # assign current "each.key" a tag, tags are a list property
+  # assign current "each.key" a tag
   tags = {
-    name = each.key  
+    Name = each.key  
   }
 
   # EC2 key-value properties
-  ami           = "ami-04e914639d0cca79a"  # ubuntu predefined image
+  ami           = "ami-03f65b8614a860c29"  # ubuntu predefined image
   instance_type = "t2.medium"
   key_name      = "kasm"
 
