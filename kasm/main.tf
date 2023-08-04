@@ -23,8 +23,8 @@ terraform {
 # create AWS EC2 instance
 resource "aws_instance" "kasm_server" {
 
-  # repeat for each var.kasm_ec2
-  for_each = toset(var.kasm_ec2)
+  # repeat for each kasm_ec2
+  for_each = toset(local.kasm_ec2)
 
   # assign current "each.key" a tag, tags are a list property
   tags = {
@@ -36,31 +36,15 @@ resource "aws_instance" "kasm_server" {
   instance_type = "t2.medium"
   key_name      = "Kasm"
 
-  # EC2 cpu properties are lists
-  cpu_options = {
-    core_count       = 2
-    threads_per_core = 1
-  }
-
   # EC2 storage properties are lists
-  ebs_block_device = [
-    {
-      device_name = "/dev/sdf"
-      volume_type = "gp3"
-      volume_size = 60
-      throughput  = 200
-      tags = {
-        MountPoint = "/mnt/data"
-      }
+  ebs_block_device {
+    device_name = "/dev/sdf"
+    volume_type = "gp3"
+    volume_size = 60
+    throughput  = 200
+    tags = {
+      MountPoint = "/mnt/data"
     }
-  ]
-
-  # For EC2, elastic ip's are an external resource
-  # kasm_eip is elastic ip resources in aws_eip pool
-  resource "aws_eip" "kasm_eip" { 
-    count = length(var.kasm_ec2)
-
-    instance = aws_instance.kasm_server[count.index].id
   }
 
   # Security group
@@ -69,6 +53,13 @@ resource "aws_instance" "kasm_server" {
   # For EC2/AMI, install Kasm resources for Ubuntu
   user_data = file("install_kasm.sh")
 
+}
+
+# Elastic ip's are 
+resource "aws_eip" "kasm_eip" {
+  for_each = aws_instance.kasm_server
+
+  instance = each.value.id
 }
 
 # Security Group for Kasm instances
