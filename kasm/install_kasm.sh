@@ -2,22 +2,23 @@
 
 # install_kasm.sh
 
-# Check Cloud-Init Logs: cloud-init-output.log, cloud-init.log
-# The logs are located in /var/log/
-# Search for echo lines below in an editor to trace failures
+# Check Cloud-Init Log: cloud-init-output.log
+# The log is located in /var/log/
+# Search for echo lines below in an editor to trace progres/failures
 echo "Hello Terraform!"
-
+#
 echo "Update packages"
 sudo apt-get update -y
-
+#
 # Reference: https://Kasmweb.com/docs/latest/install/single_server_install.html
 echo "Kasm Single Server Download"
 cd /tmp
-curl -fsSL -o Kasm_release_1.13.1.421524.tar.gz https://Kasm-static-content.s3.amazonaws.com/Kasm_release_1.13.1.421524.tar.gz
-tar -xf Kasm_release_1.13.1.421524.tar.gz
-# Automate prompts for EULA, Swap Partition, and Port
+curl -fsSL -O https://kasm-static-content.s3.amazonaws.com/kasm_release_1.13.1.421524.tar.gz
+tar -xf kasm_release_1.13.1.421524.tar.gz
 echo "Kasm Single Server Install"
-sudo bash Kasm_release/install.sh --accept-eula --swap-size 8192 -L 8443
+# Automate prompts for EULA, Swap Partition, and Port
+sudo bash kasm_release/install.sh --accept-eula --swap-size 8192 -L 8443
+tar -xf Kasm_release_1.13.1.421524.tar.gz
 # 
 @echo Nginx Installation
 sudo apt-get install -y nginx
