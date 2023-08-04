@@ -20,10 +20,10 @@ echo "Kasm Single Server Install"
 sudo bash kasm_release/install.sh --accept-eula --swap-size 8192 -L 8443
 tar -xf Kasm_release_1.13.1.421524.tar.gz
 # 
-@echo Nginx Installation
+echo Nginx Installation
 sudo apt-get install -y nginx
 #
-@echo Certbot Installation
+echo Certbot Installation
 sudo snap install core
 sudo snap refresh core
 sudo snap install --classic certbot
