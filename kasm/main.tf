@@ -38,10 +38,9 @@ resource "aws_instance" "kasm_server" {
 
   # EC2 storage properties are lists
   ebs_block_device {
-    device_name = "/dev/sdf"
+    device_name = "/dev/sda1"
     volume_type = "gp3"
     volume_size = 60
-    throughput  = 200
     tags = {
       MountPoint = "/mnt/data"
     }
@@ -93,7 +92,6 @@ resource "aws_security_group" "kasm_sg" {
   }
 
   # outbound network traffic rules
-  
   egress {
     from_port   = 0
     to_port     = 0
