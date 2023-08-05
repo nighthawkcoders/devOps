@@ -31,7 +31,7 @@ sudo ln -s /snap/bin/certbot /usr/bin/certbot
 #
 echo Nginx setup
 # Terraform file provisioner
-sudo cat <<EOF > "/etc/nginx/sites_available/${SUBDOMAIN}.conf"
+sudo cat <<EOF > "/etc/nginx/sites-available/${SUBDOMAIN}.conf"
 
 server {
     server_name ${DOMAIN};
@@ -66,6 +66,11 @@ server {
 }
 EOF
 #
-sudo ln -s /etc/nginx/sites_available/${SUBDOMAIN}.conf /etc/nginx/sites_enabled/
+echo Nginx start
+sudo ln -s /etc/nginx/sites-available/${SUBDOMAIN}.conf /etc/nginx/sites-enabled/
+sudo systemctl start nginx
+#
+echo Certbot activate (certbot --nginx --noninteractive --agree-tos -m ${EMAIL} -d ${DOMAIN})
+certbot --nginx --noninteractive --agree-tos -m ${EMAIL} -d ${DOMAIN}
 echo "Bye Terraform!"
 

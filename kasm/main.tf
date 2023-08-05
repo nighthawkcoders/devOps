@@ -23,6 +23,7 @@ data "template_file" "install_kasm_script" {
   vars = {
     SUBDOMAIN = var.kasm_instances[count.index]["ec2_Subdomain"]
     DOMAIN    = var.kasm_instances[count.index]["ec2_Domain"]
+    EMAIL     = var.email
   }
 }
 
