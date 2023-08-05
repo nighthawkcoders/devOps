@@ -21,10 +21,10 @@ terraform {
 locals {
   # define kasm ec2 instance plan
   kasm_instances = [
-    for i in range(var.starting_instance_number, var.starting_instance_number + var.kasm_instance_count) : {
-      ec2_Name      = "${var.instance_name}${i}.${var.domain_tag}"
-      ec2_Subdomain = lower("${var.instance_name}")
-      ec2_Domain    = lower("${var.instance_name}${i}.${var.domain}")
+    for i in range(var.instances_start,  var.instances_start + var.instances_count) : {
+      ec2_Name      = "${var.instances_prefix}${i}.${var.domain_tag}"
+      ec2_Subdomain = lower("${var.instances_prefix}")
+      ec2_Domain    = lower("${var.instances_prefix}${i}.${var.domain}")
     }
   ]
 }

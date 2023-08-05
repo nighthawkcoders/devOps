@@ -1,8 +1,12 @@
-# security.tf
+# security-group/main.tf
 
 # create Security Group for Kasm EC2 instances
 resource "aws_security_group" "kasm_sg" {
   name_prefix = "kasm_sg_"
+
+  tags = {
+    Name   = "kasm_sg"
+  }
 
   # incoming network traffic rules
   
@@ -38,4 +42,9 @@ resource "aws_security_group" "kasm_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow all outbound traffic"
   }
+}
+
+# Output variable to expose the security group ID
+output "kasm_sg_id" {
+  value = aws_security_group.kasm_sg.id
 }

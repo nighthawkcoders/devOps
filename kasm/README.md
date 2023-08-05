@@ -1,6 +1,6 @@
 ## Terraform Usage/Test
-### Terraform Commands and SDLC:
-Go to kasm version control folder.
+### Terraform Test Commands and SDLC:
+Go to kasm version control folder, then run these commands.
 - Run `terraform init` to initialize the project.
 - Run `terraform plan` to see what resources will be created.
 - If the plan looks good, run `terraform apply` to create the Nginx configurations.
@@ -15,8 +15,35 @@ Go to kasm version control folder.
 - Terraform provides the 
 - Check that created EC2's and Elastic IPs are gone.
 
-### Review and Test
-Test these items to ensure functionality
+### Terraform Production Commands
+Run these commands to build EC2 instances
+
+Option A - Create 1 instances starting at 2
+
+```bash
+terraform apply -var="instances_start=2"
+```
+
+Option B - Create 2 instances starting at 10
+```bash
+terraform apply -var="instances_start=10" -var="instances_count=2"
+```
+
+Option A - Destroy 1 instances starting at 2
+
+```bash
+terraform destroy -var="instances_start=2"
+```
+
+Option B (partial destroy) - Destroy 1 instances starting at 11
+```bash
+terraform destroy -var="instances_start=11" -var="instances_count=1"
+```
+
+Repeat these steps as needed to test different scenarios. Remember to adjust the variable values as necessary for your testing. The backup of the state file is crucial for restoring your environment to specific points in time. Make sure to keep these backups in a safe location.
+
+### Test and Review 
+Test these items to ensure EC2 and Kasm functionality
 - In coding and testing be sure to `follow SDLC above`.  Terraform has errors that can occur in init, plan, and apply.  I think of init as typos/syntax, plan as logic checking, and apply as deployment/runtime checking.  ChatGPT is great resource in all Terraform error messages.
 - Be sure to review `terraform plan` output.  Check all the data to see if it makes sense prior to apply.  Check that the correct number of resources are generated and that the assignments of data look correct.  Most of my logic errors in Terraform coding are found by review the plan. 
 - Check the AWS Management Console for `EC2/EC2 Dashboard/Instances`; validate the `Tags`, `Elastic IPs`, and `Security Groups`.  This is a place where I have found errors in my Terraform coding logic; like a resource being duplicated.
@@ -76,7 +103,8 @@ TBD, Reboot (reboot.tf.exclude)
 
 ```
 
-## Future documentation
+## Other documentation
+
 Variable Names: Make some of them even more specific, like kasm_instance_prefix instead of instance_name, or starting_instance_number could become instance_number_start.
 
 Resource Names: Remove Kasm from resources.  Make system so it could be used for another application, let data and shell script where deltas happen.

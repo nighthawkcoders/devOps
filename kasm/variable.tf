@@ -1,17 +1,17 @@
-variable "instance_name" {
-  description = "Instance name or type"
+variable "instances_prefix" {
+  description = "EC2 instance name prefix"
   type        = string
-  default     = "Kasm"  # Used as prefix in naming, used for key pair
+  default     = "Kasm"  # Used as prefix in naming
 }
 
-variable "starting_instance_number" {
-  description = "Starting instance number"
+variable "instances_start" {
+  description = "Starting EC2 instance number"
   type        = number
   default     = 2  # Adjust starting integer as needed
 }
 
-variable "kasm_instance_count" {
-  description = "Number of Kasm EC2 instances"
+variable "instances_count" {
+  description = "Number of EC2 instances"
   type        = number
   default     = 1  # Adjust number of instances as needed
 }
@@ -39,4 +39,10 @@ variable "hosted_zone" {
   description = "AWS Route 53 Hosted Zone that maps to Registered Domain"
   type        = string
   default     = "Z06240873BALIBO9T07NB"
+}
+
+variable "key_pair" {
+  description = "Name of of Key pair for login"
+  type        = string
+  default     = "kasm" 
 }

@@ -1,5 +1,9 @@
 # ec2.tf
 
+module "security_group" {
+  source = "./security-group"
+}
+
 # create AWS EC2 instances
 resource "aws_instance" "kasm_server" {
   count = length(local.kasm_instances) # aws_instance iterator
@@ -13,7 +17,7 @@ resource "aws_instance" "kasm_server" {
   # assign EC2 key-value properties
   ami           = "ami-03f65b8614a860c29"  # ubuntu predefined image
   instance_type = "t2.medium"
-  key_name      = lower("${var.instance_name}")
+  key_name      = "${var.key_pair}"
 
   # assign EC2 storage properties
   ebs_block_device {
@@ -25,8 +29,8 @@ resource "aws_instance" "kasm_server" {
     }
   }
 
-  # create reference to a Security group, see security.tf
-  vpc_security_group_ids = [aws_security_group.kasm_sg.id]
+  # create reference to a Security group, see security-group/main.tf
+  vpc_security_group_ids = [module.security_group.kasm_sg_id]
 
   # file provision and assign System setup script, see ec2_install.sh.tpl
   user_data = data.template_file.ec2_install[count.index].rendered
