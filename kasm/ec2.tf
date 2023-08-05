@@ -1,3 +1,5 @@
+# ec2.tf
+
 # create AWS EC2 instances
 resource "aws_instance" "kasm_server" {
   count = length(local.kasm_instances) # aws_instance iterator
