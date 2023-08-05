@@ -18,26 +18,45 @@ Go to kasm version control folder, then run these commands.
 ### Terraform Production Commands
 Run these commands to build EC2 instances
 
-Option A - Create 1 instances starting at 2
+### Typical Test
+`No plan`.  Create an instance, perform tests, and then come back quickly and destroy.   This is OK for testing but is probably not a good idea for production, for instance a large amout of servers.   By not saving a plan could leave lots of manual clean up if workspace is lost.  Running terraform apply and terraform plan twice in a row seems to do merge/rename.
 
 ```bash
+teraform init
+teraform plan -var="instances_start=2"
 terraform apply -var="instances_start=2"
+# ... test time ...
+terraform destroy
+```
+
+### Asynchronous Production events
+The remaining portion of this is trying to make a plan, apply, and destroy using a plan, this support asynchronous events.  Note, this non-linear behavior represents how events and server growth could occur.
+
+Option A plan - Create 1 instance starting at 5.  
+
+```bash
+teraform init
+terraform plan -var="instances_start=5" -out=opA.tfplan
+terraform apply opA.tfplan
 ```
 
 Option B - Create 2 instances starting at 10
+
 ```bash
-terraform apply -var="instances_start=10" -var="instances_count=2"
+terraform plan -var="instances_start=10" -var="instances_count=2" -opB.tfplan
+terraform apply opB.tfplan
 ```
 
-Option A - Destroy 1 instances starting at 2
+Option A - Destroy saved plan opA.tfplan
 
 ```bash
-terraform destroy -var="instances_start=2"
+terraform destroy opA.tfplan
 ```
 
-Option B (partial destroy) - Destroy 1 instances starting at 11
+Option B - Destroy a portion of saved plan opB.tfplan
 ```bash
-terraform destroy -var="instances_start=11" -var="instances_count=1"
+terraform plan opB.tfplan -destroy -var="instances_start=11" -var="instances_count=1" -out=opB.tfplan
+
 ```
 
 Repeat these steps as needed to test different scenarios. Remember to adjust the variable values as necessary for your testing. The backup of the state file is crucial for restoring your environment to specific points in time. Make sure to keep these backups in a safe location.
