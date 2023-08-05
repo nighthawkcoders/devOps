@@ -8,7 +8,7 @@ resource "null_resource" "delayed_reboot" {
   }
 
   provisioner "local-exec" {
-    command = "sleep 600"  # Wait for 10 minutes before rebooting
+    command = "sleep 900"  # Wait for 15 minutes before rebooting
   }
 
   depends_on = [null_resource.nginx_restart]
