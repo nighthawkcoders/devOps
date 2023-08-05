@@ -68,7 +68,6 @@ echo Nginx start
 sudo ln -s /etc/nginx/sites-available/${SUBDOMAIN}.conf /etc/nginx/sites-enabled/
 sudo systemctl start nginx
 #
-echo Certbot activate (certbot --nginx --noninteractive --agree-tos -m ${EMAIL} -d ${DOMAIN})
-certbot --nginx --noninteractive --agree-tos -m ${EMAIL} -d ${DOMAIN}
+echo Certbot activate
+sudo certbot --nginx --noninteractive --agree-tos -m ${EMAIL} -d ${DOMAIN}
 echo "Bye Terraform!"
-
