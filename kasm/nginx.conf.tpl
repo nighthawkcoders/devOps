@@ -1,5 +1,5 @@
 server {
-    server_name ${subdomain}.nighthawkcodingsociety.com;
+    server_name ${domain};
     listen 80;
 
     location / {

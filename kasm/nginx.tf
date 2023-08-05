@@ -1,26 +1,50 @@
 # nginx.tf
 
-resource "null_resource" "nginx_conf" {
-  count = length(var.subdomain)
+# Define the nginx configuration file template
+data "template_file" "nginx_conf_template" {
+  count = length(var.kasm_instances)
+  template = file("${path.module}/nginx.conf.tpl")
+
+  vars = {
+    subdomain = var.kasm_instances[count.index]["ec2_Subdomain"]
+    domain    = var.kasm_instances[count.index]["ec2_Domain"]
+  }
+}
+
+# Create the nginx configuration file from the template
+resource "local_file" "nginx_conf" {
+  count    = length(var.kasm_instances)
+  filename = "/etc/nginx/sites-available/${var.kasm_instances[count.index]["ec2_Subdomain"]}.conf"
+  content  = data.template_file.nginx_conf_template[count.index].rendered
+}
+
+# Create a symbolic link for the enabled sites
+resource "null_resource" "nginx_symlink" {
+  count = length(var.kasm_instances)
 
   triggers = {
-    template = data.template_file.nginx_conf_template.rendered
+    subdomain = var.kasm_instances[count.index]["ec2_Subdomain"]
   }
 
   provisioner "local-exec" {
-    command = "echo '${data.template_file.nginx_conf_template.rendered}' > /tmp/nginx.conf.tpl"
+    command = "ln -s /etc/nginx/sites-available/${var.kasm_instances[count.index]["ec2_Subdomain"]}.conf /etc/nginx/sites-enabled/"
   }
 
-  provisioner "file" {
-    source      = "/tmp/nginx.conf.tpl"
-    destination = "/etc/nginx/sites-available/${var.subdomain}.conf"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "ln -s /etc/nginx/sites-available/${data.template_file.nginx_conf_template.vars.subdomain} /etc/nginx/sites-enabled/",
-      "sudo systemctl start nginx",
-      "certbot --nginx --noninteractive --agree-tos -m ${var.email} -d aws_eip.kasm_eip[count.index].name"   
-    ]
-  }
+  depends_on = [resource.local_file.nginx_conf]
 }
+
+# Restart Nginx after configuration changes
+resource "null_resource" "nginx_restart" {
+  count = length(var.kasm_instances)
+
+  triggers = {
+    subdomain = var.kasm_instances[count.index]["ec2_Subdomain"]
+  }
+
+  provisioner "local-exec" {
+    command = "sudo systemctl restart nginx"
+  }
+
+  depends_on = [null_resource.nginx_symlink]
+}
+

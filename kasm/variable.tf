@@ -26,14 +26,17 @@ variable "kasm_instances" {
   default = [
     {
       ec2_Name   = "Kasm2.ncs.com"
+      ec2_Subdomain = "kasm2"
       ec2_Domain = "kasm2.nighthawkcodingsociety.com"
     },
     {
       ec2_Name   = "Kasm3.ncs.com"
+      ec2_Subdomain = "kasm3"
       ec2_Domain = "kasm3.nighthawkcodingsociety.com"
     },
     {
       ec2_Name   = "Kasm4.ncs.com"
+      ec2_Subdomain = "kasm4"
       ec2_Domain = "kasm4.nighthawkcodingsociety.com"
     },
     # Add more instances as needed
