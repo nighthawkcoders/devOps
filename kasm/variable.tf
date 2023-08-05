@@ -1,7 +1,7 @@
 variable "instance_name" {
   description = "Instance name or type"
   type        = string
-  default     = "Kasm"  # Used as prefix in EC2 naming
+  default     = "Kasm"  # Used as prefix in naming, lower case form is key pair
 }
 
 variable "starting_instance_number" {

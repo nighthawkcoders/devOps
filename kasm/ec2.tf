@@ -11,7 +11,7 @@ resource "aws_instance" "kasm_server" {
   # assign EC2 key-value properties
   ami           = "ami-03f65b8614a860c29"  # ubuntu predefined image
   instance_type = "t2.medium"
-  key_name      = "kasm"
+  key_name      = lower("${var.instance_name}")
 
   # assign EC2 storage properties
   ebs_block_device {
