@@ -10,7 +10,7 @@ resource "aws_eip" "kasm_eip" {
   }
 
   # create reference to a EC2 instance, see ec2.tf
-  instance = aws_instance.kasm_server[count.index].id
+  instance = aws_instance.kasm_server[count.index].id # map Elastic IP <--> EC2
 }
 
 # create DNS A records in zone_id
