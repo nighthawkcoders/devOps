@@ -1,70 +1,84 @@
 ## Terraform Usage/Test
-
-#### 1st Stage - EC2 Instances Only:
-Create a folder for your test (e.g., stage1).
-- Place your variable.tf, ec2_install.sh.tpl, and main.tf files in the folder.
+### Terraform Commands and SDLC:
+Go to kasm version control folder.
 - Run `terraform init` to initialize the project.
 - Run `terraform plan` to see what resources will be created.
+- If the plan looks good, run `terraform apply` to create the Nginx configurations.
+- Perform review and analysis on AWS Console
+- Perform review, test, and analys by running Kasm server from the Browser.
+- Update or commit code changes if you have an incrementally succesful run.
+- If you are done with testing and review perform `terraform destroy` command.
+- Continue with Terraform SDLC: code-init-plan-apply-commit-destroy cycle.
+
 - If the plan looks good, run `terraform apply to create the EC2 instances.
-- Manually check the AWS Management Console to ensure that the EC2 instances are created with the correct tags and elastice IPs.
-- Terraform provides the `terraform destroy` command, which you can use to destroy all the resources created by a specific Terraform configuration. Run this before moving on to next test.
+
+- Terraform provides the 
 - Check that created EC2's and Elastic IPs are gone.
 
-#### 2nd Stage - EC2 Instances and Route 53 Records:
-Create a new folder for this test (e.g., stage2)
-- Add network.tf to previous files set.
-- Run `terraform init` in this folder.
-- Run `terraform plan` to see what resources will be created.
-- If the plan looks good, run terraform apply to create the Route 53 records.
-- Manually check the AWS Management Console to ensure that the Route 53 records are created correctly.
-- Run `terraform destroy`
-- Check that created EC2's and Elastic IPs are gone.
+### Review and Test
+Test these items to ensure functionality
+- In coding and testing be sure to `follow SDLC above`.  Terraform has errors that can occur in init, plan, and apply.  I think of init as typos/syntax, plan as logic checking, and apply as deployment/runtime checking.  ChatGPT is great resource in all Terraform error messages.
+- Be sure to review `terraform plan` output.  Check all the data to see if it makes sense prior to apply.  Check that the correct number of resources are generated and that the assignments of data look correct.  Most of my logic errors in Terraform coding are found by review the plan. 
+- Check the AWS Management Console for `EC2/EC2 Dashboard/Instances`; validate the `Tags`, `Elastic IPs`, and `Security Groups`.  This is a place where I have found errors in my Terraform coding logic; like a resource being duplicated.
+- `Use Console` to Connect to a specifc EC2 Instance ID.  I use the vi or vim editor and search the log /var/log/cloud-init-output.log.  Many echo message have been intentionally made in ec2_install.sh.tpl, called scaffolding, to lock for in the editor.  Through multiple terraform apply commands and scaffolding anyone can work through shell errors.  
+- `Kasm Testing`, login through browser to admin and user accounts.  You can find password looking for admin@kasm.local in /var/logcloud-init-output.log or --admin-password and --user-password in ec2_install.sh.tpl in test automation.  Start testing `Kasm registry and workspaces`
 
 #### 3rd Stage - EC2 Instances, Route 53 Records, and Nginx Configurations:
-Run final test from version control folder.
 - Run `terraform init` in this folder.
 - Run `terraform plan` to see what resources will be created.
-- If the plan looks good, run `terraform apply` to create the Nginx configurations.
 - Manually check the AWS Management Console to ensure that the Nginx configurations are created in correct location.
 - Test access of each EC2 instance from internet (eg. kasm2.nighthawkcodingsociety.com)
 - Test access to Kasm workspaces by logging in.
 - Leave these running and start testing Kasm registry and workspaces if all is well.
 
 ## Terraform Architecture
-This breakdown shows the hierarchical relationship between the variables, main module and its sub-modules. The main module calls the EC2, Kasm, Networking, Security, etc. to set up key portions of system.
+This breakdown shows the hierarchical relationship between files (mostly .tf modules) and function.
 
-Terraform Module Breakdown for EC2 Instances and Kasm Workspaces
+Terraform Module Breakdown
 
 ```
 
-File Provisioner (ec2_install.sh.tmp)
-|---> Install script for EC2
+EC2 install script (ec2_install.sh.tmp)
+|---> Downloads and installs Kasm
+|---> Sets up and configures nginx and certbot
+|---> Uses Terraform file provisioning for custom EC2 requirements
 
 Variable (variable.tf)
-|---> Centralizes unique configuration settings.
+|---> Centralizes unique variables.
+|---> Sets EC2 instance names and quantity
+|---> Sets email, route 53 hosted zone, or other future external depenencies
 
+AWS Instances (ec2.tf)
+|---> Creates AWS EC2's
+|---> Install Ubuntu AMI
+|---> Sets key pair
+|---> Sets security group
+|---> Launches install script through user_data
 
-Main (Root Module)
-|---> Creates AWS EC2 Instances
-|---> Configures inbound traffic, sets up elastic ips
-|---> Installs Kasm and network tools on EC2
+Network.tf
+|---> Sets Up public facing Elastice IP's
+|---> Maps Elastic IP to EC2
+|---> Sets Up DNS A records, Domain names to public IP's
 
-#2. Network.tf
-|---> Sets Up DNS in Route 53
+Security (security.tf)
+|---> Configures inbound traffic: SSH, HTTP, HTTPS
+|---> Allows all outbound traffic
 
-#3. Nginx
-|---> Configure nginx template through file provision
-|---> Moves nginx.conf file into appropriate system location
-|---> Depends on main.tf and network.tf
-
-#4. Future, Security and Workspace setups
+TBD, Kasm Configuration (not started)
 |---> Defines Kasm roles, Policies, and Security Groups
 |---> Input Variables: permissions, security_groups, etc.
 |---> Round-robin user population across instances (Terraform?)
 
-#5. Reboot
-|---> Checks that other resources have been created
-|---> Performs reboot so that all services are activated
-|---> Depends on nginx.tf
+TBD, Reboot (reboot.tf.exclude)
+|---> Still investigating approaches
+|---> Sleeps for 15 minutes and then reboot all EC2's created
+|---> Performs reboot to verify all services reactivate
 
 ```
+
+## Future documentation
+Variable Names: Make some of them even more specific, like kasm_instance_prefix instead of instance_name, or starting_instance_number could become instance_number_start.
+
+Resource Names: Remove Kasm from resources.  Make system so it could be used for another application, let data and shell script where deltas happen.
+
+Error Handling: Review shell script and for basic error handling and logging improvements..
