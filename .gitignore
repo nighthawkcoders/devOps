@@ -16,3 +16,6 @@ venv.bak/
 volumes/sqlite.db
 instance/volumes/sqlite.db
 
+.terraform
+.terraform.lock.hcl
+terraform.*

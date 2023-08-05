@@ -16,17 +16,23 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
-# create AWS EC2 instance
-resource "aws_instance" "kasm_server" {
+data "template_file" "install_kasm_script" {
+  count = length(var.kasm_instances)
+  template = file("${path.module}/install_kasm.sh.tpl")
 
-  for_each = {
-    for instance in var.kasm_instances :
-    instance["ec2_Name"] => instance
+  vars = {
+    SUBDOMAIN = var.kasm_instances[count.index]["ec2_Subdomain"]
+    DOMAIN    = var.kasm_instances[count.index]["ec2_Domain"]
   }
+}
+
+# create AWS EC2 instances
+resource "aws_instance" "kasm_server" {
+  count = length(var.kasm_instances)
 
   tags = {
-    Name   = each.value.ec2_Name
-    Domain = each.value.ec2_Domain
+    Name   = var.kasm_instances[count.index]["ec2_Name"]
+    Domain = var.kasm_instances[count.index]["ec2_Domain"]
   }
 
   # EC2 key-value properties
@@ -48,15 +54,14 @@ resource "aws_instance" "kasm_server" {
   vpc_security_group_ids = [aws_security_group.kasm_sg.id]
 
   # For EC2/AMI, install Kasm resources for Ubuntu
-  user_data = file("install_kasm.sh")
-
+  user_data = data.template_file.install_kasm_script[count.index].rendered
 }
 
 # Elastic ip's
 resource "aws_eip" "kasm_eip" {
-  for_each = aws_instance.kasm_server
+  count = length(aws_instance.kasm_server)
 
-  instance = each.value.id
+  instance = aws_instance.kasm_server[count.index].id
 }
 
 # Security Group for Kasm instances
@@ -97,6 +102,5 @@ resource "aws_security_group" "kasm_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow all outbound traffic"
   }
-
 }
 
