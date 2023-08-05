@@ -1,7 +1,7 @@
 variable "instance_name" {
   description = "Instance name or type"
   type        = string
-  default     = "Kasm"  # Used as prefix in naming, lower case form is key pair
+  default     = "Kasm"  # Used as prefix in naming, used for key pair
 }
 
 variable "starting_instance_number" {
@@ -13,7 +13,7 @@ variable "starting_instance_number" {
 variable "kasm_instance_count" {
   description = "Number of Kasm EC2 instances"
   type        = number
-  default     = 3  # Adjust number of instances as needed
+  default     = 1  # Adjust number of instances as needed
 }
 
 variable "domain" {
