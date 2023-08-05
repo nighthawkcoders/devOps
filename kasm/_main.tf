@@ -22,9 +22,9 @@ locals {
   # define kasm ec2 instance plan
   kasm_instances = [
     for i in range(var.starting_instance_number, var.starting_instance_number + var.kasm_instance_count) : {
-      ec2_Name      = "Kasm${i}.${var.domain_tag}"
-      ec2_Subdomain = "kasm${i}"
-      ec2_Domain    = "kasm${i}.${var.domain}"
+      ec2_Name      = "${var.instance_name}${i}.${var.domain_tag}"
+      ec2_Subdomain = lower("${var.instance_name}")
+      ec2_Domain    = lower("${var.instance_name}.${var.domain}")
     }
   ]
 }

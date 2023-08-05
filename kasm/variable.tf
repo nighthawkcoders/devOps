@@ -1,3 +1,9 @@
+variable "instance_name" {
+  description = "Instance type"
+  type        = string
+  default     = "Kasm"  # Adjust starting integer as needed
+}
+
 variable "starting_instance_number" {
   description = "Starting instance number"
   type        = number
