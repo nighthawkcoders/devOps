@@ -19,7 +19,7 @@ Go to kasm version control folder, then run these commands.
 Run these commands to build EC2 instances
 
 ### Typical Test
-`No plan`.  Create an instance, perform tests, and then come back quickly and destroy.   This is OK for testing but is probably not a good idea for production, for instance a large amout of servers.   By not saving a plan could leave lots of manual clean up if workspace is lost.  Running terraform apply and terraform plan twice in a row seems to do merge/rename.
+`No plan`.  Create an instance, perform tests, and then come back quickly and destroy. 
 
 ```bash
 teraform init
@@ -29,8 +29,8 @@ terraform apply -var="instances_start=2"
 terraform destroy
 ```
 
-### Asynchronous Production events
-The remaining portion of this is trying to make a plan, apply, and destroy using a plan, this support asynchronous events.  Note, this non-linear behavior represents how events and server growth could occur.
+### Single workspace
+The remaining portion of this is trying to make a plan, apply the plan, and destroy.
 
 Option A plan - Create 1 instance starting at 5.  
 
@@ -40,22 +40,16 @@ terraform plan -var="instances_start=5" -out=opA.tfplan
 terraform apply opA.tfplan
 ```
 
-Option B - Create 2 instances starting at 10
+Option B - Create 2 instances starting at 10.  This has the behavior of destroying previous element, instance 5
 
 ```bash
-terraform plan -var="instances_start=10" -var="instances_count=2" -opB.tfplan
-terraform apply opB.tfplan
+terraform plan -var="instances_start=10" -var="instances_count=2" -out=opB.tfplan
+terraform apply "opB.tfplan"
 ```
 
-Option A - Destroy saved plan opA.tfplan
-
+Destroy a portion of saved plan opB.tfplan
 ```bash
-terraform destroy opA.tfplan
-```
-
-Option B - Destroy a portion of saved plan opB.tfplan
-```bash
-terraform plan opB.tfplan -destroy -var="instances_start=11" -var="instances_count=1" -out=opB.tfplan
+terraform destroy
 
 ```
 
