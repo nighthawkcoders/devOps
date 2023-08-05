@@ -7,7 +7,7 @@ variable "instances_prefix" {
 variable "instances_start" {
   description = "Starting EC2 instance number"
   type        = number
-  default     = 2  # Adjust starting integer as needed
+  default     = 0  # Adjust starting integer as needed
 }
 
 variable "instances_count" {
