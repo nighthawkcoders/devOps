@@ -2,7 +2,7 @@
 
 #### 1st Stage - EC2 Instances Only:
 Create a folder for your test (e.g., stage1).
-- Place your variable.tf, install_kasm.sh, and main.tf files in the folder.
+- Place your variable.tf, ec2_install.sh.tpl, and main.tf files in the folder.
 - Run `terraform init` to initialize the project.
 - Run `terraform plan` to see what resources will be created.
 - If the plan looks good, run `terraform apply to create the EC2 instances.
@@ -36,11 +36,15 @@ This breakdown shows the hierarchical relationship between the variables, main m
 Terraform Module Breakdown for EC2 Instances and Kasm Workspaces
 
 ```
-#0. Variables
-|---> Centralizes Configuration Settings
-|---> Defines Input Variables Used Across Sub-Modules
 
-#1. Main (Root Module)
+File Provisioner (ec2_install.sh.tmp)
+|---> Install script for EC2
+
+Variable (variable.tf)
+|---> Centralizes unique configuration settings.
+
+
+Main (Root Module)
 |---> Creates AWS EC2 Instances
 |---> Configures inbound traffic, sets up elastic ips
 |---> Installs Kasm and network tools on EC2

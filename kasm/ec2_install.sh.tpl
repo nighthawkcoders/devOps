@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# install_kasm.sh
+# ec2_install.sh
 
 # Check Cloud-Init Log: cloud-init-output.log
 # The log is located in /var/log/
@@ -16,8 +16,8 @@ cd /tmp
 curl -fsSL -O https://kasm-static-content.s3.amazonaws.com/kasm_release_1.13.1.421524.tar.gz
 tar -xf kasm_release_1.13.1.421524.tar.gz
 echo "Kasm Single Server Install"
-# Automate prompts for EULA, Swap Partition, and Port
-sudo bash kasm_release/install.sh --accept-eula --swap-size 8192 -L 8443
+# Automate prompts for EULA, Swap Partition, Port, Passwords
+sudo bash kasm_release/install.sh --accept-eula --swap-size 8192 -L 8443 --admin-password "123Qwerty!" --user-password "123Qwerty!"
 tar -xf Kasm_release_1.13.1.421524.tar.gz
 # 
 echo Nginx Installation
@@ -70,4 +70,5 @@ sudo systemctl start nginx
 #
 echo Certbot activate
 sudo certbot --nginx --noninteractive --agree-tos -m ${EMAIL} -d ${DOMAIN}
+#
 echo "Bye Terraform!"

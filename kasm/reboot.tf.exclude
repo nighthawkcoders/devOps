@@ -1,15 +1,15 @@
 # reboot.tf
 
-resource "null_resource" "reboot_instances" {
-  for_each = aws_instance.kasm_server
+resource "null_resource" "delayed_reboot" {
+  count = length(var.kasm_instances)
 
   triggers = {
-    instance_id = each.value.id
+    subdomain = var.kasm_instances[count.index]["ec2_Subdomain"]
   }
 
   provisioner "local-exec" {
-    command = "aws ec2 reboot-instances --instance-ids ${each.value.id}"
+    command = "sleep 600"  # Wait for 10 minutes before rebooting
   }
 
-  depends_on = [null_resource.nginx_restart]  # Make sure this is correct based on your dependencies
+  depends_on = [null_resource.nginx_restart]
 }
