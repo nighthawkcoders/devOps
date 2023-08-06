@@ -3,10 +3,10 @@
 
 # create Security Group for typical Web type EC2 instance(s)
 resource "aws_security_group" "web_sg" {
-  name_prefix = "${var.instances_prefix}.web_sg_"
+  name_prefix = "${var.instances_prefix}${var.instances_start}.web_sg_"
 
   tags = {
-    Name   = "${var.instances_prefix}.web_sg"
+    Name   = "${var.instances_prefix}${var.instances_start}.web_sg"
   }
 
   # incoming network traffic rules
