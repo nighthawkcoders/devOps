@@ -1,3 +1,5 @@
+# variable.tf
+
 variable "instances_prefix" {
   description = "EC2 instance name prefix"
   type        = string

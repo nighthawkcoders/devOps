@@ -1,10 +1,10 @@
 # reboot.tf
 
 resource "null_resource" "delayed_reboot" {
-  count = length(var.kasm_instances)
+  count = length(var.ec2_instances)
 
   triggers = {
-    subdomain = var.kasm_instances[count.index]["ec2_Subdomain"]
+    subdomain = var.ec2_instances[count.index]["ec2_Subdomain"]
   }
 
   provisioner "local-exec" {

@@ -1,17 +1,13 @@
 # ec2.tf
 
-module "security_group" {
-  source = "./security-group"
-}
-
 # create AWS EC2 instances
-resource "aws_instance" "kasm_server" {
-  count = length(local.kasm_instances) # aws_instance iterator
+resource "aws_instance" "ec2_server" {
+  count = length(local.ec2_instances) # aws_instance iterator
 
   # assign Meta data
   tags = {
-    Name   = local.kasm_instances[count.index]["ec2_Name"]  # Name tag for AWS console
-    Domain = local.kasm_instances[count.index]["ec2_Domain"]
+    Name   = local.ec2_instances[count.index]["ec2_Name"]  # Name tag for AWS console
+    Domain = local.ec2_instances[count.index]["ec2_Domain"]
   }
 
   # assign EC2 key-value properties
@@ -29,8 +25,8 @@ resource "aws_instance" "kasm_server" {
     }
   }
 
-  # create reference to a Security group, see security-group/main.tf
-  vpc_security_group_ids = [module.security_group.kasm_sg_id]
+  # create reference to a Security group, see security.tf
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
 
   # file provision and assign System setup script, see ec2_install.sh.tpl
   user_data = data.template_file.ec2_install[count.index].rendered
