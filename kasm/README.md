@@ -10,7 +10,7 @@ Go to kasm version control folder, then run these commands.
 - If you are done with testing and review perform `terraform destroy` command.
 - Continue with Terraform SDLC: code-init-plan-apply-commit-destroy cycle.
 
-- If the plan looks good, run `terraform apply to create the EC2 instances.
+- If the plan looks good, run `terraform apply` to create the EC2 instances.
 
 - Terraform provides the 
 - Check that created EC2's and Elastic IPs are gone.
