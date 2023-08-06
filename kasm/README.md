@@ -19,7 +19,7 @@ Go to kasm version control folder, then run these commands.
 Run these commands to build EC2 instances
 
 ### Typical Test
-`No plan`.  Create an instance, perform tests, and then come back quickly and destroy. 
+Create an instance, perform tests, and then come back quickly and destroy. 
 
 ```bash
 teraform init
@@ -29,7 +29,7 @@ terraform apply -var="instances_start=2"
 terraform destroy
 ```
 
-### Single workspace
+### Single workspace with Plan
 The remaining portion of this is trying to make a plan, apply the plan, and destroy.
 
 Option A plan - Create 1 instance starting at 5.  
@@ -44,7 +44,7 @@ Option B - Create 2 instances starting at 10.  This has the behavior of destroyi
 
 ```bash
 terraform plan -var="instances_start=10" -var="instances_count=2" -out=opB.tfplan
-terraform apply "opB.tfplan"
+terraform apply opB.tfplan
 ```
 
 Destroy a portion of saved plan opB.tfplan
@@ -53,7 +53,42 @@ terraform destroy
 
 ```
 
-Repeat these steps as needed to test different scenarios. Remember to adjust the variable values as necessary for your testing. The backup of the state file is crucial for restoring your environment to specific points in time. Make sure to keep these backups in a safe location.
+### Two Workspace
+The remaining portion of this is trying to make a plan, apply the plan, and destroy.
+
+DevOps Machines 1 - Create 1 instance starting at 50.  Follow terraform commands, review plan and following Test and Review below.
+
+```bash
+mkdir -p ~/projects
+cd ~/projects
+git clone https://github.com/nighthawkcoders/devOps.git dop1
+cd ~/projects/dop1/kasm
+teraform init
+terraform plan -var="instances_start=50" -out=plan.tfplan
+terraform apply plan.tfplan
+terraform show
+```
+
+DevOps Machines 2 - Create 3 instances starting at 100.   Follow terraform commands, review plan and following Test and Review below.
+
+```bash
+cd ~/projects
+git clone https://github.com/nighthawkcoders/devOps.git dop2
+cd ~/projects/dop1/kasm
+terraform plan -var="instances_start=100" -var="instances_count=3" -out=plan.tfplan
+terraform apply plan.tfplan
+terraform show
+```
+
+Destroy from dop1.  Review destroy plan and make sure dop2 projects are still available.
+```bash
+cd ~/projects/dop1
+terraform destroy
+
+cd ~/projects/dop1
+terraform show
+```
+
 
 ### Test and Review 
 Test these items to ensure EC2 and Kasm functionality
