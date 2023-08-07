@@ -18,4 +18,6 @@ instance/volumes/sqlite.db
 
 .terraform
 .terraform.lock.hcl
+.terraform.tfstate.lock.info
 terraform.*
+*.tfplan

@@ -30,9 +30,8 @@ sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 #
 echo Nginx setup
-# Terraform file provisioner
-sudo cat <<EOF > "/etc/nginx/sites-available/${SUBDOMAIN}.conf"
-
+# a cat output with Terraform file provisioner updating doman 
+sudo bash -c 'cat <<\EOF > "/etc/nginx/sites-available/${SUBDOMAIN}.conf"
 server {
     server_name ${DOMAIN};
     listen 80;
@@ -59,10 +58,13 @@ server {
 
          # Allow large requests to support file uploads to sessions
          client_max_body_size 10M;
-         proxy_pass https://localhost:8443;
-    }
+
+         # Proxy to Kasm Workspaces running locally on 8443 using ssl
+         proxy_pass https://127.0.0.1:8443 ;
+     }
 }
-EOF
+EOF'
+
 #
 echo Nginx start
 sudo ln -s /etc/nginx/sites-available/${SUBDOMAIN}.conf /etc/nginx/sites-enabled/
@@ -70,5 +72,10 @@ sudo systemctl start nginx
 #
 echo Certbot activate
 sudo certbot --nginx --noninteractive --agree-tos -m ${EMAIL} -d ${DOMAIN}
+#
+echo Firewall allow kasm_default_network, kasm_proxy
+sudo ufw enable
+sudo ufw allow https
+sudo ufw status verbose
 #
 echo "Bye Terraform!"
