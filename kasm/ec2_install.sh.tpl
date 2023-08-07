@@ -35,7 +35,7 @@ echo Nginx setup
 sudo bash -c 'cat <<\EOF > "/etc/nginx/sites-available/${SUBDOMAIN}.conf"
 server {
     server_name ${DOMAIN};
-     listen 443 ssl;
+    listen 443 ssl;
 
     location / {
          # The following configurations must be configured when proxying to Kasm Workspaces
