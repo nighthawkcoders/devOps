@@ -17,7 +17,7 @@ curl -fsSL -O https://kasm-static-content.s3.amazonaws.com/kasm_release_1.13.1.4
 tar -xf kasm_release_1.13.1.421524.tar.gz
 echo "Kasm Single Server Install"
 # Automate prompts for EULA, Swap Partition, Port, Passwords (TBD, remove passords testing passwords)
-sudo bash kasm_release/install.sh --accept-eula --swap-size 8192 --admin-password "123Qwerty!" --user-password "123Qwerty!"
+sudo bash kasm_release/install.sh --accept-eula --swap-size 8192 -L 8443 --admin-password "123Qwerty!" --user-password "123Qwerty!"
 tar -xf Kasm_release_1.13.1.421524.tar.gz
 # 
 echo Nginx Installation
@@ -35,7 +35,7 @@ echo Nginx setup
 sudo bash -c 'cat <<\EOF > "/etc/nginx/sites-available/${SUBDOMAIN}.conf"
 server {
     server_name ${DOMAIN};
-    listen 80;
+     listen 443 ssl;
 
     location / {
          # The following configurations must be configured when proxying to Kasm Workspaces
@@ -61,7 +61,7 @@ server {
          client_max_body_size 10M;
 
          # Proxy to Kasm Workspaces running locally on 8443 using ssl
-         proxy_pass https://127.0.0.1:443 ;
+         proxy_pass https://127.0.0.1:8443 ;
      }
 }
 EOF'
