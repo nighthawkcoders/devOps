@@ -30,7 +30,8 @@ sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 #
 echo Nginx setup
-# a cat output with Terraform file provisioner updating doman 
+# cat output with Terraform file provisioner updating doman 
+# bash -c is critical for heredoc as dollar signs appear in text
 sudo bash -c 'cat <<\EOF > "/etc/nginx/sites-available/${SUBDOMAIN}.conf"
 server {
     server_name ${DOMAIN};
