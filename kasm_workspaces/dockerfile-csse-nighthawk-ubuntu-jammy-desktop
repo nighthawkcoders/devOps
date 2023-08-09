@@ -11,6 +11,31 @@ WORKDIR $HOME
 
 ######### Customize Container Here ###########
 
+# Set Anaconda environment
+ENV CONDA_DIR /opt/anconda3
+ENV CONDA_BIN $CONDA_DIR/bin
+
+# Install Anaconda
+RUN cd /tmp/ && \
+    wget https://repo.anaconda.com/archive/Anaconda3-2023.07-1-Linux-x86_64.sh && \
+    chmod +x Anaconda3-2023.07-1-Linux-x86_64.sh && \
+    ./Anaconda3-2023.07-1-Linux-x86_64.sh -b -p ${CONDA_DIR} && \
+    rm -r Anaconda3-2023.07-1-Linux-x86_64.sh
+
+# Add Conda to Global Path
+ENV PATH="$CONDA_BIN:$PATH"
+RUN echo 'export PATH="$PATH"' >> /etc/bash.bashrc
+
+# Setup Anaconda User profile
+RUN conda update -n base conda && \
+    conda update --all && \
+    conda clean --all && \
+    conda config --set ssl_verify /etc/ssl/certs/ca-certificates.crt && \
+    conda install pip && \
+    mkdir -p $HOME/.pip && \
+    chown -R 1000:1000 /opt/anaconda3 $HOME/.conda/ && \
+    /opt/anaconda3/bin/conda install -y jupyter
+
 # Define source location
 ENV SRC ./src/ubuntu/install
 
@@ -37,23 +62,6 @@ RUN \
   done && \
   rm -Rf ${INST_SCRIPTS}
 
-# Install Anaconda
-RUN cd /tmp/ && \
-    wget https://repo.anaconda.com/archive/Anaconda3-2023.07-1-Linux-x86_64.sh && \
-    bash Anaconda3-2023.07-1-Linux-x86_64.sh -b -p /opt/anaconda3 && \
-    rm -r Anaconda3-2023.07-1-Linux-x86_64.sh
-
-# Setup Anaconda User profile
-ENV PATH="/opt/anaconda3/bin:$PATH"
-RUN echo 'export PATH="/opt/anaconda3/bin:$PATH"' >> /etc/bash.bashrc && \
-    /opt/anaconda3/bin/conda update -n base conda && \
-    /opt/anaconda3/bin/conda update --all && \
-    /opt/anaconda3/bin/conda clean --all && \
-    /opt/anaconda3/bin/conda config --set ssl_verify /etc/ssl/certs/ca-certificates.crt && \
-    /opt/anaconda3/bin/conda install pip && \
-    mkdir -p ${HOME}/.pip && \
-    chown -R 1000:1000 /opt/anaconda3 ${HOME}/.conda/ && \
-    /opt/anaconda3/bin/conda install -y jupyter
 
 
 ########## End Customizations ###########
