@@ -40,7 +40,7 @@ docker build -t devops/csse-kasm-workspaces:latest -f dockerfile-csse-nighthawk-
 Logging
 
 ```bash
-# This can take a long time, see time!!!
+# This can take a long time "20 minutes", see time!!!
 [+] Building 872.6s (15/15) FINISHED                                                                            
  => [internal] load build definition from dockerfile-csse-nighthawk-ubuntu-jammy-desktop-agupta            0.0s
  => => transferring dockerfile: 2.11kB                                                                     0.0s
@@ -80,7 +80,7 @@ docker push nighthawkcoders/kasm_workspaces:latest
 Logging
 
 ```bash
-# This can take a long time hours, but seems to recover from interupts, see log
+# This can take a long time "hours", but seems to recover from interupts, see log
 # Note, screen saver causes job to pause
 The push refers to repository [docker.io/nighthawkcoders/kasm_workspaces]
 2a1c121ffe10: Preparing 
