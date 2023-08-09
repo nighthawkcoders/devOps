@@ -1,14 +1,43 @@
-## Workflow
+## Kasm Workspaces Overview
+This Kasm worspaces project is intended to produce Desktop software and Development tools to meet students needs.  Kasm worspaces are dependent on AWS EC2 servers that are installed with Kasm workspaces "server"; that project is in another folder in this repository. 
+```
+Kasm workspace software development workflow (-> action, * dependency)
+---------------------------------------------------------------------
+
+Development                Deployment                Test (on Kasm server)
+|-----------------------|   |----------------------|  |-----------------------| 
+| -> Code Docker Image  |   | -> Publish Images    |  | -> Install Image      |
+|    Recipes            |   |   with tag           |  |    from Registry      |
+|   * GitHub            |   |   * DockerHub        |  | -> Start Workspace    | 
+|      Code Repo        |   |      Images Repo     |  |    Session            |
+|                       |   |   * GitHub           |  | -> Test Desktop       |
+|                       |   |      Registry Repo   |  |    Features           |
+|-----------------------|   |----------------------|  |-----------------------|
+
+Software Development Life Cycle (SDLC)
+--------------------------------------
+Code -> Build Images (w/tag) -> Push tag -> Test Images
+```
+
+
+## Kasm Workspaces SDLC
+The Developer iterates through the actions that follow.  Be aware to look ahead as time of jobs, size of images, and tags of images can cause frustrations and challenges.
+
 1. `Code` in dockerfile-* and in src directory
     - add code for new tools
     - add support files to src/ubuntu/install, check [Kasm](https://github.com/kasmtech/workspaces-images.git)
+
 2. `Build` the dockerfile-* file
+Commands
 
 ```bash
 # clean up docker often, before a new run is best
 docker image prune  
-docker build -t devops/csse-kasm-workspaces:1.0 -f dockerfile-csse-nighthawk-ubuntu-jammy-desktop .
+# tag name needs to match your docker hub setup, see below, latest could be :1.0 for specific verion
+docker build -t devops/csse-kasm-workspaces:latest -f dockerfile-csse-nighthawk-ubuntu-jammy-desktop .
 ````
+
+Logging
 
 ```bash
 # This can take a long time, see time!!!
@@ -37,14 +66,62 @@ docker build -t devops/csse-kasm-workspaces:1.0 -f dockerfile-csse-nighthawk-ubu
 docker build -t devops/kasm-workspaces:1.0 -f dockerfile-csse-nighthawk-ubuntu-jammy-desktop .
 ```
 3. `Push` the docker files
+Commands
 
 ```bash
-# You need to setup something like https://hub.docker.com/repository/docker/nighthawkcoders/kasm_workspaces/general
-docker push nighthawkcoders/kasm_workspaces:1.0
+# Setup your dockerhub by registering account through docker.io.  This is like GitHub, the public repositories are free.
+docker login
+# if you name is wrong, you can rename it to match
+docker tag devops/csse-kasm-workspaces:1.0 nighthawkcoders/kasm_workspaces:latest
+# Tag names need to match the [docker hub](https://hub.docker.com/repository/docker/nighthawkcoders/kasm_workspaces/general).  
+docker push nighthawkcoders/kasm_workspaces:latest
 ```
 
-4. `Test` the on Kasm (kasm100.nighthawkcodingsociety.com)
-    - install workspace from registry
+Logging
+
+```bash
+# This can take a long time hours, but seems to recover from interupts, see log
+# Note, screen saver causes job to pause
+The push refers to repository [docker.io/nighthawkcoders/kasm_workspaces]
+2a1c121ffe10: Preparing 
+5f70bf18a086: Preparing 
+ba97dcb9b48e: Preparing 
+43829d907bf5: Preparing 
+c2c23b83a67b: Preparing 
+7394376fd8c2: Waiting 
+7f71d15b5062: Waiting 
+8d1ff2660c79: Waiting 
+d31550a9bd79: Waiting 
+faf9ed65e452: Waiting 
+f0e68679b4a0: Waiting 
+ede4c8fd2a48: Waiting 
+52bc49669665: Waiting 
+3ce2f9513d62: Waiting 
+53c6646e1b86: Waiting 
+7bb99a4e8d1e: Waiting 
+980b09195535: Waiting 
+eaaf9137396d: Waiting 
+3b294c4eb0b9: Waiting 
+5cfbbec7fee9: Waiting 
+7b62ef8b6184: Waiting 
+d31550a9bd79: Pushing [===============>                                   ]  1.959GB/6.42GB
+cf1de89ac5da: Layer already exists 
+1aed7b7359c3: Layer already exists 
+91f32011820e: Layer already exists 
+d9fb259c210b: Layer already exists 
+f7e680995ade: Layer already exists 
+0c14e6ac6cf1: Layer already exists 
+22bef8b22033: Layer already exists 
+5b8ca191b60b: Layer already exists 
+2aed46e7ee11: Layer already exists 
+3f0976fe4ecf: Layer already exists 
+6eb744c503e9: Layer already exists 
+
+```
+
+4. `Test` on Kasm
+    - this depends on [registry setup](https://github.com/nighthawkcoders/kasm_registry/tree/1.0/workspaces/CSSE-Ubuntu-Jammy) 
+    - install workspace from registry (aka kasm100.nighthawkcodingsociety.com)
     - run workpace
 
 ## Registry Requirements 
