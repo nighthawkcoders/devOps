@@ -120,9 +120,13 @@ f7e680995ade: Layer already exists
 ```
 
 4. `Test` on Kasm
-    - this depends on [registry setup](https://github.com/nighthawkcoders/kasm_registry/tree/1.0/workspaces/CSSE-Ubuntu-Jammy) 
-    - install workspace from registry (aka kasm100.nighthawkcodingsociety.com)
-    - run workpace
+- [Registry setup](https://github.com/nighthawkcoders/kasm_registry/tree/1.0/workspaces/CSSE-Ubuntu-Jammy)
+- [](https://nighthawkcoders.github.io/kasm_registry/) 
+- Goto Kasm Sever (aka kasm100.nighthawkcodingsociety.com), login admin@kasm.local.   Select form left panel "Workspace", then "Workspace Registry".  "Add new" registry if "Del Norte HS Computer Science" not found. Obtain Registry Link [here](https://nighthawkcoders.github.io/kasm_registry).
+- Click on small icons and install "Available Workspace".  This can take some time!!!
+- At top of screen select "WORKSPACES"
+install workspace from registry () is required for the pushed image to be visible on Kasm workspaces admin panel
+- run workpace
 
 ## Registry Requirements 
 The registry has an instance of the devOps kasm_workspaces.
