@@ -11,20 +11,31 @@ WORKDIR $HOME
 
 ######### Customize Container Here ###########
 
+# Define source location
+ENV SRC ./src/ubuntu/install
 
-RUN apt-get update -y \
-    && apt-get install -y sudo \
-    && echo 'kasm-user ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
-    && rm -rf /var/lib/apt/list/*
+### Envrionment config
+ENV DEBIAN_FRONTEND=noninteractive \
+    SKIP_CLEAN=true \
+    KASM_RX_HOME=$STARTUPDIR/kasmrx \
+    DONT_PROMPT_WSL_INSTALL="No_Prompt_please" \
+    INST_DIR=$STARTUPDIR/install \
+    SHELL_SCRIPTS="tools/install_tools.sh \
+                  chrome/install_chrome.sh \
+                  vs_code/install_vs_code.sh \
+                  gimp/install_gimp.sh \
+                  obs/install_obs.sh \
+                  cleanup/cleanup.sh"
 
-# Install Google Chrome
-COPY ./src/ubuntu/install/chrome $INST_SCRIPTS/chrome/
-RUN bash $INST_SCRIPTS/chrome/install_chrome.sh  && rm -rf $INST_SCRIPTS/chrome/
+# Copy install scripts
+COPY $SRC $INST_SCRIPTS
 
-#Install VSCode
-
-COPY ./src/ubuntu/install/vs_code $INST_SCRIPTS/vs_code/
-RUN bash $INST_SCRIPTS/vs_code/install_vs_code.sh  && rm -rf $INST_SCRIPTS/vs_code/
+# Run installations
+RUN \
+  for SCRIPT in $SHELL_SCRIPTS; do \
+    bash ${INST_SCRIPTS}/${SCRIPT}; \
+  done && \
+  rm -Rf ${INST_SCRIPTS}
 
 #Install Anaconda
 RUN cd /tmp/ && \
@@ -43,9 +54,6 @@ RUN echo 'export PATH="/opt/anaconda3/bin:$PATH"' >> /etc/bash.bashrc && \
     mkdir -p /home/kasm-user/.pip && \
     chown -R 1000:1000 /opt/anaconda3 /home/kasm-default-profile/.conda/ && \
     /opt/anaconda3/bin/conda install -y jupyter
-
-COPY ./src/ubuntu/install/tools $INST_SCRIPTS/tools/
-RUN bash $INST_SCRIPTS/tools/install_tools.sh  && rm -rf $INST_SCRIPTS/tools/
 
 
 ######### End Customizations ###########

@@ -32,8 +32,8 @@ RUN conda update -n base conda && \
     conda clean --all && \
     conda config --set ssl_verify /etc/ssl/certs/ca-certificates.crt && \
     conda install pip && \
-    mkdir -p $HOME/.pip && \
-    chown -R 1000:1000 /opt/anaconda3 $HOME/.conda/ && \
+    mkdir -p ${HOME}/.pip && \
+    chown -R 1000:1000 ${CONDA_DIR} ${HOME}/.conda/ && \
     /opt/anaconda3/bin/conda install -y jupyter
 
 # Define source location
@@ -61,8 +61,6 @@ RUN \
     bash ${INST_SCRIPTS}/${SCRIPT}; \
   done && \
   rm -Rf ${INST_SCRIPTS}
-
-
 
 ########## End Customizations ###########
 
