@@ -34,7 +34,7 @@ RUN conda update -n base conda && \
     conda install pip && \
     mkdir -p ${HOME}/.pip && \
     chown -R 1000:1000 ${CONDA_DIR} ${HOME}/.conda/ && \
-    /opt/anaconda3/bin/conda install -y jupyter
+    conda install -y jupyter
 
 # Define source location
 ENV SRC ./src/ubuntu/install
