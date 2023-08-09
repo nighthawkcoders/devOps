@@ -1,10 +1,10 @@
 ## Workflow
 1. `Code` in dockerfile-* and in src directory
     - add code for new tools
-    - add support files to src/ubuntu/install, check [Kasm}(https://github.com/kasmtech/workspaces-images.git
+    - add support files to src/ubuntu/install, check [Kasm](https://github.com/kasmtech/workspaces-images.git)
 2. `Build` the dockerfile-* file
 ```bash
-docker build -t devOps/kasm-workspaces:1.0 -f dockerfile-csse-nighthawk-ubuntu-jammy-desktop
+docker build -t devops/kasm-workspaces:1.0 -f dockerfile-csse-nighthawk-ubuntu-jammy-desktop .
 ```
 3. `Push` the docker files
 ```bash
