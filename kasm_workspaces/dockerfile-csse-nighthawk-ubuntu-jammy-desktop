@@ -39,6 +39,24 @@ RUN \
   chown -R 1000:0 /home/kasm-user && \
   rm -Rf ${INST_DIR}
 
+#Install Anaconda
+RUN cd /tmp/ && \
+    wget https://repo.anaconda.com/archive/Anaconda3-2023.07-1-Linux-x86_64.sh && \
+    bash Anaconda3-2023.07-1-Linux-x86_64.sh -b -p /opt/anaconda3 && \
+    rm -r Anaconda3-2023.07-1-Linux-x86_64.sh
+
+# Add Anaconda to PATH and set up environment
+ENV PATH="/opt/anaconda3/bin:$PATH"
+RUN echo 'export PATH="/opt/anaconda3/bin:$PATH"' >> /etc/bash.bashrc && \
+    /opt/anaconda3/bin/conda update -n base conda && \
+    /opt/anaconda3/bin/conda update --all && \
+    /opt/anaconda3/bin/conda clean --all && \
+    /opt/anaconda3/bin/conda config --set ssl_verify /etc/ssl/certs/ca-certificates.crt && \
+    /opt/anaconda3/bin/conda install pip && \
+    mkdir -p /home/kasm-user/.pip && \
+    chown -R 1000:1000 /opt/anaconda3 /home/kasm-default-profile/.conda/ && \
+    /opt/anaconda3/bin/conda install -y jupyter
+
 # Userspace Runtime
 ENV HOME /home/kasm-user
 WORKDIR $HOME
