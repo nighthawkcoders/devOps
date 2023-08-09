@@ -11,41 +11,39 @@ WORKDIR $HOME
 
 ######### Customize Container Here ###########
 
+# Define source location
+ENV SRC ./src/ubuntu/install
+
 ### Envrionment config
 ENV DEBIAN_FRONTEND=noninteractive \
     SKIP_CLEAN=true \
     KASM_RX_HOME=$STARTUPDIR/kasmrx \
     DONT_PROMPT_WSL_INSTALL="No_Prompt_please" \
     INST_DIR=$STARTUPDIR/install \
-    INST_SCRIPTS="/ubuntu/install/tools/install_tools_deluxe.sh \
-                  /ubuntu/install/chrome/install_chrome.sh \
-                  /ubuntu/install/vs_code/install_vs_code.sh \
-                  /ubuntu/install/gimp/install_gimp.sh \
-                  /ubuntu/install/obs/install_obs.sh \
-                  /ubuntu/install/cleanup/cleanup.sh"
+    SHELL_SCRIPTS="tools/install_tools.sh \
+                  chrome/install_chrome.sh \
+                  vs_code/install_vs_code.sh \
+                  gimp/install_gimp.sh \
+                  obs/install_obs.sh \
+                  cleanup/cleanup.sh"
 
 # Copy install scripts
-COPY ./src/ $INST_DIR
+COPY $SRC $INST_SCRIPTS
 
 # Run installations
 RUN \
-  for SCRIPT in $INST_SCRIPTS; do \
-    bash ${INST_DIR}${SCRIPT}; \
+  for SCRIPT in $SHELL_SCRIPTS; do \
+    bash ${INST_SCRIPTS}/${SCRIPT}; \
   done && \
-  $STARTUPDIR/set_user_permission.sh $HOME && \
-  rm -f /etc/X11/xinit/Xclients && \
-  chown 1000:0 $HOME && \
-  mkdir -p /home/kasm-user && \
-  chown -R 1000:0 /home/kasm-user && \
-  rm -Rf ${INST_DIR}
+  rm -Rf ${INST_SCRIPTS}
 
-#Install Anaconda
+# Install Anaconda
 RUN cd /tmp/ && \
     wget https://repo.anaconda.com/archive/Anaconda3-2023.07-1-Linux-x86_64.sh && \
     bash Anaconda3-2023.07-1-Linux-x86_64.sh -b -p /opt/anaconda3 && \
     rm -r Anaconda3-2023.07-1-Linux-x86_64.sh
 
-# Add Anaconda to PATH and set up environment
+# Setup Anaconda User profile
 ENV PATH="/opt/anaconda3/bin:$PATH"
 RUN echo 'export PATH="/opt/anaconda3/bin:$PATH"' >> /etc/bash.bashrc && \
     /opt/anaconda3/bin/conda update -n base conda && \
@@ -53,13 +51,18 @@ RUN echo 'export PATH="/opt/anaconda3/bin:$PATH"' >> /etc/bash.bashrc && \
     /opt/anaconda3/bin/conda clean --all && \
     /opt/anaconda3/bin/conda config --set ssl_verify /etc/ssl/certs/ca-certificates.crt && \
     /opt/anaconda3/bin/conda install pip && \
-    mkdir -p /home/kasm-user/.pip && \
-    chown -R 1000:1000 /opt/anaconda3 /home/kasm-default-profile/.conda/ && \
+    mkdir -p ${HOME}/.pip && \
+    chown -R 1000:1000 /opt/anaconda3 ${HOME}/.conda/ && \
     /opt/anaconda3/bin/conda install -y jupyter
 
-# Userspace Runtime
+
+########## End Customizations ###########
+
+RUN chown 1000:0 $HOME
+RUN $STARTUPDIR/set_user_permission.sh $HOME
+
 ENV HOME /home/kasm-user
 WORKDIR $HOME
-USER 1000
+RUN mkdir -p $HOME && chown -R 1000:0 $HOME
 
-CMD ["--tail-log"]
+USER 1000
