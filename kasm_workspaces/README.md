@@ -63,7 +63,6 @@ Logging
  => => exporting layers                                                                                  170.2s 
  => => writing image sha256:d9c1fd0c858f8d6e43eea6d4ce52540e718374da85e8774c05bd2d6f334d374c               0.0s
  => => naming to docker.io/devops/csse-kasm-workspaces:1.0     
-docker build -t devops/kasm-workspaces:1.0 -f dockerfile-csse-nighthawk-ubuntu-jammy-desktop .
 ```
 3. `Push` the docker files
 Commands
@@ -72,7 +71,7 @@ Commands
 # Setup your dockerhub by registering account through docker.io.  This is like GitHub, the public repositories are free.
 docker login
 # if you name is wrong, you can rename it to match
-docker tag devops/csse-kasm-workspaces:1.0 nighthawkcoders/kasm_workspaces:latest
+docker tag devops/csse-kasm-workspaces:latest:1.0 nighthawkcoders/kasm_workspaces:latest
 # Tag names need to match the [docker hub](https://hub.docker.com/repository/docker/nighthawkcoders/kasm_workspaces/general).  
 docker push nighthawkcoders/kasm_workspaces:latest
 ```

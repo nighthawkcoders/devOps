@@ -32,7 +32,7 @@ RUN conda update -n base conda && \
     conda clean --all && \
     conda config --set ssl_verify /etc/ssl/certs/ca-certificates.crt && \
     conda install pip && \
-    mkdir -p ${HOME}/.pip && \
+    mkdir -p /home/kasm-user/.pip && \
     chown -R 1000:1000 ${CONDA_DIR} ${HOME}/.conda/ && \
     conda install -y jupyter
 
