@@ -127,6 +127,64 @@ f7e680995ade: Layer already exists
 install workspace from registry () is required for the pushed image to be visible on Kasm workspaces admin panel
 - run workpace
 
-## Registry Requirements 
+## Registry Data 
 The registry has an instance of the devOps kasm_workspaces.
-- Location: [https://nighthawkcoders.github.io/kasm_registry/1.0/](https://nighthawkcoders.github.io/kasm_registry/1.0/)
+- GitHub Pages Location: [kasm_registry GitHub Pages](https://nighthawkcoders.github.io/kasm_registry/1.0/)  On the server you can view attributes for a workspace in a friendly form.
+- GitHub location: [kasm_registry files](https://github.com/nighthawkcoders/kasm_registry)  The easier way make an new registry entry, for me, is to copy a folder in Workspaces and adjust entries for your specific branding.
+
+```json
+{
+    "description": "Nighthawk Coders CSSE Official 2023-2024 Ubuntu Desktop Workspace",
+    "docker_registry": "https://index.docker.io/v1/",
+    "image_src": "nighthawkcoders.png",
+    "name": "nighthawkcoders/kasm_workspaces:latest",
+    "run_config": {
+      "hostname": "kasm"
+    },
+    "exec_config": {
+        "go": {
+          "cmd": "bash -c '/dockerstartup/custom_startup.sh --go --url \"$KASM_URL\"'"
+        },
+        "assign": {
+          "cmd": "bash -c '/dockerstartup/custom_startup.sh --assign --url \"$KASM_URL\"'"
+        }
+    },
+    "categories": [
+      "Desktop",
+      "Development"
+    ],
+    "friendly_name": "CSSE Ubuntu Jammy",
+    "architecture": [
+      "amd64"
+    ],
+    "compatibility": [
+      "1.13.x"
+    ],
+    "uncompressed_size_mb": 10000
+  }
+```
+
+## Adminstration
+Manual configuations follow.
+
+### Workspace Server
+Each time you peform a Terraform deployment you should make these adjusments to the server.
+- CPU and Memory override.   As admin.kasm.local user go to `Compute / Docker Agents` on left panel. Go to triple dots (...) on far right of listed Docker Agent override values as follows:
+
+```
+# Values have been increased according to use case expectations
+
+CPU Cores: 2  ---> CPU Cores Override: 6
+Memory: 4110970880 ---> Memory Override: 12110970880
+```
+
+- Proxy Port adjustement.  As admin.kasm.local user go to `Zones` on left panel.  Go to triple dots (...) on far right of listed Zone set the value as follows:
+
+```
+# Nginx reverse proxy eliminates need for this setting
+
+Proxy Port: 0
+```
+
+### Workspaces 
+Each time you deploy a workspace you should consider these valuable edits after install on workspace server.  To make these edits, go t 
