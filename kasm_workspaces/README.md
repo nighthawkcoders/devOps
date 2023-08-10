@@ -120,7 +120,6 @@ f7e680995ade: Layer already exists
 
 4. `Test` on Kasm
 - [Registry setup](https://github.com/nighthawkcoders/kasm_registry/tree/1.0/workspaces/CSSE-Ubuntu-Jammy)
-- [](https://nighthawkcoders.github.io/kasm_registry/) 
 - Goto Kasm Sever (aka kasm100.nighthawkcodingsociety.com), login admin@kasm.local.   Select form left panel "Workspace", then "Workspace Registry".  "Add new" registry if "Del Norte HS Computer Science" not found. Obtain Registry Link [here](https://nighthawkcoders.github.io/kasm_registry).
 - Click on small icons and install "Available Workspace".  This can take some time!!!
 - At top of screen select "WORKSPACES"
@@ -164,11 +163,12 @@ The registry has an instance of the devOps kasm_workspaces.
   }
 ```
 
-## Adminstration
-Manual configuations follow.
+## Kasm Adminstration
+Manual configuations is required for the following.
 
-### Workspace Server
+### Workspace Server Configs
 Each time you peform a Terraform deployment you should make these adjusments to the server.
+
 - CPU and Memory override.   As admin.kasm.local user go to `Compute / Docker Agents` on left panel. Go to triple dots (...) on far right of listed Docker Agent override values as follows:
 
 ```
@@ -186,5 +186,30 @@ Memory: 4110970880 ---> Memory Override: 12110970880
 Proxy Port: 0
 ```
 
-### Workspaces 
-Each time you deploy a workspace you should consider these valuable edits after install on workspace server.  To make these edits, go t 
+### Workspaces Configs
+Each time you setup a server you need to consider configure these items.
+
+- Workspace Registry Add.  As admin.kasm.local user go to `Workspaces` on left panel and select `Workspace Registry`.  First, get link by following link and clicking [Workspace Registry Link](https://nighthawkcoders.github.io/kasm_registry/).  Add the copied link to the `Add New`.  The "Del Norte HS Computer Science" registry should appear, select small icons in box to filter.
+- Install Workspace.  Click in the box of the desired and pick Install to add the workspace to the servers workspace.  This can take a while "10 minutes".  After installation you need to make the following adustments to the installed workspace.   For each workspace, admin.kasm.local user go to `Workspaces` on left panel and observe catalog of installed workspace(s).  Go to triple dots (...) on far right of listed Workspace and set the value as follows:
+```
+# Persistent Home Directory (Kasm recommend different setting per workspace, here we use coders)
+
+Persistent Profile Path:  /mnt/kasm_profiles/coders/{username}
+
+# Setup Sudo.  This will require adding of File Mapping at bottom of page
+
+Name: kasm_post_run_root.sh
+Description: Install sudo update sudoers
+Destination Path: /dockerstartup/kasm_post_run_root.sh
+Executable: Slide to True
+
+Large box:
+#!/usr/bin/env bash
+set -ex
+apt-get update
+apt-get install -y sudo
+echo "kasm-user  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+notify-send "Script Complete" "sudo is now installed"
+
+```
+
