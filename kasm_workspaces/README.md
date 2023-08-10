@@ -34,7 +34,7 @@ Commands
 # clean up docker often, before a new run is best
 docker image prune  
 # tag name needs to match your docker hub setup, see below, latest could be :1.0 for specific verion
-docker build -t devops/csse-kasm-workspaces:latest -f dockerfile-csse-nighthawk-ubuntu-jammy-desktop .
+docker build -t nighthawkcoders/kasm_workspaces:latest -f dockerfile-csse-nighthawk-ubuntu-jammy-desktop .
 ````
 
 Logging
@@ -70,8 +70,7 @@ Commands
 ```bash
 # Setup your dockerhub by registering account through docker.io.  This is like GitHub, the public repositories are free.
 docker login
-# if you name is wrong, you can rename it to match
-docker tag devops/csse-kasm-workspaces:latest:1.0 nighthawkcoders/kasm_workspaces:latest
+# if you name is wrong, you can rename it to match: docker tag devops/csse-kasm-workspaces:latest:1.0 nighthawkcoders/kasm_workspaces:latest
 # Tag names need to match the [docker hub](https://hub.docker.com/repository/docker/nighthawkcoders/kasm_workspaces/general).  
 docker push nighthawkcoders/kasm_workspaces:latest
 ```
