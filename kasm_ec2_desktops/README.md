@@ -157,4 +157,4 @@ Variable Names: Make some of them even more specific, like kasm_instance_prefix 
 
 Resource Names: Remove Kasm from resources.  Make system so it could be used for another application, let data and shell script where deltas happen.
 
-Error Handling: Review shell script and for basic error handling and logging improvements..
+Error Handling: Review shell script and for basic error handling and logging improvements.
