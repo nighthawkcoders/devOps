@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <h1>User Dashboard</h1>
+      <table>
+        <tr>
+          <th>Server</th>
+          <th>Username</th>
+          <th>Actions</th>
+        </tr>
+        {% for server, users in users_per_server.items() %} {% for user in users
+        %}
+        <tr>
+          <td>{{ server }}</td>
+          <td>{{ user }}</td>
+          <td>
+            <a href="https://aadit.dev">Delete</a>
+            <a href="https://aadit.dev">Reset Password</a>
+          </td>
+        </tr>
+        {% endfor %} {% endfor %}
+      </table>
+    </div>
+  </body>
+</html>
