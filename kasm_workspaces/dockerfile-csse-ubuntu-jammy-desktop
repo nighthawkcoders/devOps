@@ -1,0 +1,65 @@
+ARG BASE_TAG="1.13.1-rolling"
+ARG BASE_IMAGE="core-ubuntu-jammy"
+FROM kasmweb/$BASE_IMAGE:$BASE_TAG
+USER root
+
+ENV HOME /home/kasm-default-profile
+ENV STARTUPDIR /dockerstartup
+ENV INST_SCRIPTS $STARTUPDIR/install
+
+WORKDIR $HOME
+
+######### Customize Container Here ###########
+
+# Set Anaconda environment
+ENV CONDA_DIR /opt/anconda3
+ENV PATH $CONDA_DIR/bin:$PATH
+
+# Install Anaconda
+RUN cd /tmp/ && \
+    wget https://repo.anaconda.com/archive/Anaconda3-2023.07-1-Linux-x86_64.sh && \
+    chmod +x Anaconda3-2023.07-1-Linux-x86_64.sh && \
+    ./Anaconda3-2023.07-1-Linux-x86_64.sh -b -p ${CONDA_DIR} && \
+    rm -r Anaconda3-2023.07-1-Linux-x86_64.sh
+
+# Add Conda to Global Path
+ENV PATH="$CONDA_BIN:$PATH"
+RUN echo 'export PATH="$PATH"' >> /etc/bash.bashrc
+
+### Envrionment config
+ENV DEBUG=false \
+    DEBIAN_FRONTEND=noninteractive \
+    SKIP_CLEAN=true \
+    KASM_RX_HOME=$STARTUPDIR/kasmrx \
+    DONT_PROMPT_WSL_INSTALL="No_Prompt_please" \
+    INST_DIR=$STARTUPDIR/install \
+    INST_SCRIPTS="/ubuntu/install/tools/install_tools.sh \
+                  /ubuntu/install/chrome/install_chrome.sh \
+                  /ubuntu/install/chromium/install_chromium.sh \
+                  /ubuntu/install/sublime_text/install_sublime_text.sh \
+                  /ubuntu/install/vs_code/install_vs_code.sh \
+                  /ubuntu/install/cleanup/cleanup.sh"
+
+# Copy install scripts
+COPY ./src/ $INST_DIR
+# Run installations
+RUN \
+  for SCRIPT in $INST_SCRIPTS; do \
+    bash ${INST_DIR}${SCRIPT}; \
+  done && \
+  rm -f /etc/X11/xinit/Xclients && \
+  rm -Rf ${INST_DIR}
+
+########## End Customizations ###########
+
+RUN chown 1000:0 $HOME
+RUN $STARTUPDIR/set_user_permission.sh $HOME
+
+# Userspace Runtime
+ENV HOME /home/kasm-user
+WORKDIR $HOME
+RUN mkdir -p $HOME && chown -R 1000:0 $HOME
+
+USER 1000
+
+CMD ["--tail-log"]
