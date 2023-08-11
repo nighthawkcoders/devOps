@@ -10,6 +10,10 @@ KASM_SERVERS = {
         "api_key": "nbjIDH6zO5LJ",
         "api_key_secret": "rF4bS7QJUrbttxyzsHAEVT6mYpOor8ty"
     },
+    "https://kasm102.nighthawkcodingsociety.com": {
+        "api_key": "MUGRY8VuxFf3",
+        "api_key_secret": "QRdDGD30myezBtDvlkOtYlWCinUdNBx9"
+    },
     # Add more servers here
 }
 
@@ -30,6 +34,7 @@ with open(LOG_FILE, 'a') as f:
     f.write("| First Name | Last Name | Server | Status |\n")
     f.write("| --- | --- | --- | --- |\n")
 
+
 def create_user(api_key, api_key_secret, user_data, api_base_url):
     endpoint = f"{api_base_url}/api/public/create_user"
     headers = {
@@ -42,6 +47,22 @@ def create_user(api_key, api_key_secret, user_data, api_base_url):
     }
     response = requests.post(endpoint, json=payload, headers=headers)
     return response.json()
+
+def get_users_count(api_key, api_key_secret, api_base_url):
+    endpoint = f"{api_base_url}/api/public/get_users"
+    headers = {
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "api_key": api_key,
+        "api_key_secret": api_key_secret
+    }
+    response = requests.post(endpoint, json=payload, headers=headers)
+
+    users_list = response.json().get("users", [])
+    filtered_users = [user for user in users_list if "@kasm.local" not in user.get("username")]
+    print(f"Users on {api_base_url}: {len(filtered_users)}")
+    return len(filtered_users)
 
 def log_status(user_data, api_base_url, status, log_file):
     with open(log_file, 'a') as f:
@@ -65,17 +86,26 @@ def main():
                 "disabled": False
             }
 
-            api_base_url = server_list[current_server_index]
+            while True:
+                api_base_url = server_list[current_server_index]
+                users_count = get_users_count(KASM_SERVERS[api_base_url]['api_key'], KASM_SERVERS[api_base_url]['api_key_secret'], api_base_url)
 
-            if user_counts[api_base_url] < MAX_USERS_PER_SERVER and user_data['username'] not in users_per_server[api_base_url]:
-                response = create_user(KASM_SERVERS[api_base_url]['api_key'], KASM_SERVERS[api_base_url]['api_key_secret'], user_data, api_base_url)
-                status = response.get('status') if response.get('status') == 'success' else f"Error: {response.get('error_message')}"
+                if users_count < 0:
+                    break  # Exit the loop if there's an issue with user count retrieval
 
-                user_counts[api_base_url] += 1
-                users_per_server[api_base_url].append(user_data['username'])
-                log_status(user_data, api_base_url, status, LOG_FILE)
+                if user_counts[api_base_url] < MAX_USERS_PER_SERVER and users_count < MAX_USERS_PER_SERVER:
+                    response = create_user(KASM_SERVERS[api_base_url]['api_key'], KASM_SERVERS[api_base_url]['api_key_secret'], user_data, api_base_url)
+                    status = response.get('status') if response.get('status') == 'success' else f"Error: {response.get('error_message')}"
 
-            current_server_index = (current_server_index + 1) % len(server_list)
+                    user_counts[api_base_url] += 1
+                    users_per_server[api_base_url].append(user_data['username'])
+                    log_status(user_data, api_base_url, status, LOG_FILE)
+                else:
+                    current_server_index = (current_server_index + 1) % len(server_list)
+                    continue  # Move to the next server
+
+                current_server_index = (current_server_index + 1) % len(server_list)
+                break  # Move to the next user
 
 if __name__ == "__main__":
     main()
