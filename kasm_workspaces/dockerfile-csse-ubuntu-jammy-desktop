@@ -11,21 +11,6 @@ WORKDIR $HOME
 
 ######### Customize Container Here ###########
 
-# Set Anaconda environment
-ENV CONDA_DIR /opt/anconda3
-ENV PATH $CONDA_DIR/bin:$PATH
-
-# Install Anaconda
-RUN cd /tmp/ && \
-    wget https://repo.anaconda.com/archive/Anaconda3-2023.07-1-Linux-x86_64.sh && \
-    chmod +x Anaconda3-2023.07-1-Linux-x86_64.sh && \
-    ./Anaconda3-2023.07-1-Linux-x86_64.sh -b -p ${CONDA_DIR} && \
-    rm -r Anaconda3-2023.07-1-Linux-x86_64.sh
-
-# Add Conda to Global Path
-ENV PATH="$CONDA_BIN:$PATH"
-RUN echo 'export PATH="$PATH"' >> /etc/bash.bashrc
-
 ### Envrionment config
 ENV DEBUG=false \
     DEBIAN_FRONTEND=noninteractive \

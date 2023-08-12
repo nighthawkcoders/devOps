@@ -7,7 +7,8 @@ apt-get install -y \
     nano \
     zip \
     build-essential \
-    ruby-full
+    ruby-full \
+    jupyter-notebook
 
 # Cleanup
 if [ -z ${SKIP_CLEAN+x} ]; then
