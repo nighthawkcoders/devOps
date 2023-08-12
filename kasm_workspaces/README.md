@@ -174,7 +174,7 @@ Each time you peform a Terraform deployment you should make these adjusments to 
 # Values have been increased according to use case expectations
 
 CPU Cores: 2  ---> CPU Cores Override: 6
-Memory: 4110970880 ---> Memory Override: 12110970880
+Memory: 4110970880 ---> Memory Override: 12123456789
 ```
 
 - Proxy Port adjustement.  As admin.kasm.local user go to `Zones` on left panel.  Go to triple dots (...) on far right of listed Zone set the value as follows:
@@ -182,7 +182,7 @@ Memory: 4110970880 ---> Memory Override: 12110970880
 ```
 # Nginx reverse proxy eliminates need for this setting
 
-Proxy Port: 0
+Proxy Port: 8443 ---> Proxy Port: 0
 ```
 
 ### Workspaces Configs
