@@ -198,7 +198,7 @@ Persistent Profile Path:  /mnt/kasm_profiles/coders/{username}
 # Setup Sudo and more.  This will require adding of File Mapping at bottom of page
 
 Name: kasm_post_run_root.sh
-Description: Install sudo update sudoers
+Description: Install root updates
 Destination Path: /dockerstartup/kasm_post_run_root.sh
 Executable: Slide to True
 
