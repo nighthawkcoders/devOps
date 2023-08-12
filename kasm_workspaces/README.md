@@ -195,7 +195,7 @@ Each time you setup a server you need to consider configure these items.
 
 Persistent Profile Path:  /mnt/kasm_profiles/coders/{username}
 
-# Setup Sudo.  This will require adding of File Mapping at bottom of page
+# Setup Sudo and more.  This will require adding of File Mapping at bottom of page
 
 Name: kasm_post_run_root.sh
 Description: Install sudo update sudoers
