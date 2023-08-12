@@ -8,7 +8,10 @@ apt-get install -y \
     zip \
     build-essential \
     ruby-full \
-    jupyter-notebook
+    jupyter-notebook \
+    python3 \
+    python3-pip \
+    python-is-python3
 
 # Cleanup
 if [ -z ${SKIP_CLEAN+x} ]; then
