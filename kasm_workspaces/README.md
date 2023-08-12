@@ -202,14 +202,20 @@ Description: Install sudo update sudoers
 Destination Path: /dockerstartup/kasm_post_run_root.sh
 Executable: Slide to True
 
-Large box:
-#!/usr/bin/env bash
+Large box for Focal:
 set -ex
 apt-get update
-apt-get install -y sudo
+apt-get install -y sudo ruby-full
 echo "kasm-user  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-notify-send "Script Complete" "sudo is now installed"
+notify-send "Install Complete" "sudo is now installed"
+apt-get install -y ruby-full
+notify-send "Install Complete" "ruby is now installed"
+apt-get install -y build-essential 
+notify-send "Install Complete" "build tools are now installed"
 
+Large box for Jammy:
+set -ex
+echo "kasm-user  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 ```
 
 
