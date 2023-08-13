@@ -54,5 +54,5 @@ def activate_job():  # activate these items
 if __name__ == "__main__":
     # change name for testing
     from flask_cors import CORS
-    cors = CORS(app)
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
     app.run(debug=True, host="0.0.0.0", port="8180")

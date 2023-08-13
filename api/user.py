@@ -28,7 +28,6 @@ class UserAPI:
                 return {'message': f'User ID is missing, or is less than 2 characters'}, 400
             # look for password and dob
             password = body.get('password')
-            dob = body.get('dob')
 
             ''' #1: Key code block, setup USER OBJECT '''
             uo = User(name=name, 
@@ -38,12 +37,6 @@ class UserAPI:
             # set password if provided
             if password is not None:
                 uo.set_password(password)
-            # convert to date type
-            if dob is not None:
-                try:
-                    uo.dob = datetime.strptime(dob, '%Y-%m-%d').date()
-                except:
-                    return {'message': f'Date of birth format error {dob}, must be mm-dd-yyyy'}, 400
             
             ''' #2: Key Code block to add user to database '''
             # create user in database
@@ -58,6 +51,39 @@ class UserAPI:
             users = User.query.all()    # read/extract all users from database
             json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
+        
+        def put(self, id):  # Update method
+            ''' Read data for json body '''
+            body = request.get_json()
+
+            ''' Find user by ID '''
+            user = User.query.get(id)
+            if user is None:
+                return {'message': f'User with ID {user_id} not found'}, 404
+
+            ''' Update fields '''
+            name = body.get('name')
+            if name:
+                user.name = name
+            uid = body.get('uid')
+            if uid:  
+                user.uid = uid
+            user.server_needed = body.get('server_needed')
+
+            ''' Commit changes to the database '''
+            user.update()
+            return jsonify(user.read())
+        
+        def delete(self, id):  # Delete method
+            ''' Find user by ID '''
+            user = User.query.get(id)
+            if user is None:
+                return {'message': f'User with ID {id} not found'}, 404
+
+            ''' Delete user '''
+            user.delete()
+            return {'message': f'User with ID {id} has been deleted'}
+
     
     class _Security(Resource):
 
@@ -80,8 +106,7 @@ class UserAPI:
             return jsonify(user.read())
 
             
-
     # building RESTapi endpoint
-    api.add_resource(_CRUD, '/')
+    api.add_resource(_CRUD, '/', '/<int:id>')
     api.add_resource(_Security, '/authenticate')
     
