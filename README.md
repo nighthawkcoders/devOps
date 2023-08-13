@@ -38,7 +38,7 @@ pip install -r requirements.txt
 ### Idea
 > The purpose of project is to serve APIs for managing Student and Classroom data.  It is the backend piece of a Full-Stack project.  There may be many frontend companions to the project, based off of year and curriculum.
 
-### Incubator Project, see [Terraform Automation Plan](https://nighthawkcoders.github.io/teacher//c7.0/c7.1/c7.2/2024/01/04/terraform-autmation_IPYNB_2_.html)
+### Incubator Project, see [Terraform Automation Plan](https://nighthawkcoders.github.io/teacher//devops/cloud_workspace)
 > Building Student Desktop workspaces in the cloud
 - Infrastructure: AWS, Kasm Workspaces 
 - Tooling: Python, Terraform, AWS CLI, Python BOTO module, Kasm Developer API
