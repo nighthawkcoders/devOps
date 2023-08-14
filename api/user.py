@@ -59,7 +59,7 @@ class UserAPI:
             ''' Find user by ID '''
             user = User.query.get(id)
             if user is None:
-                return {'message': f'User with ID {user_id} not found'}, 404
+                return {'message': f'User with ID {id} not found'}, 404
 
             ''' Update fields '''
             name = body.get('name')
