@@ -8,3 +8,5 @@ Flask_Migrate==4.0.1
 Flask_Restful==0.3.9
 Flask_Cors==3.0.10
 awscli
+boto3
+python-dotenv

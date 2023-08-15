@@ -3,7 +3,10 @@ import threading
 # import "packages" from flask
 from flask import render_template
 import requests  # import render_template from "public" flask libraries
-
+import boto3
+import os
+from dotenv import load_dotenv
+load_dotenv()  # Load environment variables from .env file
 # import "packages" from "this" project
 from __init__ import app,db  # Definitions initialization
 from model.jokes import initJokes
@@ -32,19 +35,21 @@ app.register_blueprint(user_api) # register api routes
 app.register_blueprint(player_api)
 app.register_blueprint(app_projects) # register app pages
 
+AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
+AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
+AWS_REGION = "us-west-2"  # Change to your desired region
+
+ec2_client = boto3.client(
+    "ec2", aws_access_key_id=AWS_ACCESS_KEY,
+    aws_secret_access_key=AWS_SECRET_KEY,
+    region_name=AWS_REGION
+)
+
 # KASM Servers
 KASM_SERVERS = {
     "https://kasm100.nighthawkcodingsociety.com": {
-        "api_key": "UmJYml6vlGtu",
-        "api_key_secret": "UKPCWqwjilQeyXR2tnjw3sixZqc88W28"
-    },
-    "https://kasm101.nighthawkcodingsociety.com": {
-        "api_key": "nbjIDH6zO5LJ",
-        "api_key_secret": "rF4bS7QJUrbttxyzsHAEVT6mYpOor8ty"
-    },
-    "https://kasm102.nighthawkcodingsociety.com": {
-        "api_key": "MUGRY8VuxFf3",
-        "api_key_secret": "QRdDGD30myezBtDvlkOtYlWCinUdNBx9"
+        "api_key": os.environ.get("KASM_100_API_KEY"),
+        "api_key_secret": os.environ.get("KASM_100_API_KEY_SECRET")
     },
     # Add more servers here
 }
@@ -99,6 +104,22 @@ def assignments():
         users_per_server[server] = [user["username"] for user in users]
 
     return render_template('assignments.html', users_per_server=users_per_server)
+
+@app.route("/servers")
+def servers():
+    response = ec2_client.describe_instances(Filters=[{"Name": "tag:Name", "Values": ["Kasm*"]}])
+
+    instances = []
+    for reservation in response["Reservations"]:
+        for instance in reservation["Instances"]:
+            instances.append({
+                "InstanceId": instance["InstanceId"],
+                "DisplayName": instance["Tags"][0]["Value"],
+                "State": instance["State"]["Name"],
+                # Add more details as needed
+            })
+
+    return render_template("servers.html", instances=instances)
 
 @app.before_first_request
 def activate_job():  # activate these items
