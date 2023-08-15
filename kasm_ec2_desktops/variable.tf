@@ -44,7 +44,7 @@ variable "hosted_zone" {
 }
 
 variable "key_pair" {
-  description = "Name of of Key pair for login"
+  description = "Name of Key pair for login"
   type        = string
   default     = "kasm" 
 }
