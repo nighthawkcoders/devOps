@@ -1,0 +1,40 @@
+<!-- Extending the predefined project layout -->
+{% extends "layouts/base.html" %}
+
+<!- This variable sets name of browser tab  -->
+{% set project = "Kasm Users" %}
+
+<!- This is a replacement block for Body in base.html -->
+{% block body %}
+    <!- Try building a new body here with jinja ->
+    <div class="px-5 py-5 mx-auto">
+        <table id="users" class="table">
+            <thead>
+                <tr>
+                    <th>Github ID</th>
+                    <th>Name</th>
+                    <th>Server Needed?</th>
+                </tr>
+                </thead>
+            <tbody>
+            {% for row in table %}
+                <!--
+                Prepare table for display
+                -->
+                <tr>
+                    <td>{{ row['uid'] }}</td>
+                    <td>{{ row['name'] }}</td>
+                    <td>{{ row['server_needed'] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <script>
+            $("#users").DataTable();
+        </script>
+    </div>
+{% endblock %}
+
+<!- This is turning off birds background from base.html -->
+{% block background %}
+{% endblock %}
