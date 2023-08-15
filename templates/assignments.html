@@ -1,0 +1,39 @@
+<!-- Extending the predefined project layout -->
+{% extends "layouts/base.html" %}
+
+<!- This variable sets name of browser tab  -->
+{% set project = "Assignments to Kasms" %}
+
+<!- This is a replacement block for Body in base.html -->
+{% block body %}
+<!- Try building a new body here with jinja ->
+<div class="px-5 py-5 mx-auto">
+  <table id="assignments" class="table">
+    <thead>
+    <tr>
+      <th>Server</th>
+      <th>Username</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for server, users in users_per_server.items() %} {% for user in users %}
+    <tr>
+      <td>{{ server }}</td>
+      <td>{{ user }}</td>
+      <td>
+        <a href="https://aadit.dev">Delete</a>
+        <a href="https://aadit.dev">Reset Password</a>
+      </td>
+    </tr>
+    {% endfor %} {% endfor %}
+    </tbody>
+  </table>
+  <script>
+    $("#assignments").DataTable();
+  </script>
+</div>
+{% endblock %}
+
+<!- This is turning off birds background from base.html -->
+{% block background %} {% endblock %}

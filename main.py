@@ -1,7 +1,8 @@
 import threading
 
 # import "packages" from flask
-from flask import render_template  # import render_template from "public" flask libraries
+from flask import render_template
+import requests  # import render_template from "public" flask libraries
 
 # import "packages" from "this" project
 from __init__ import app,db  # Definitions initialization
@@ -31,6 +32,44 @@ app.register_blueprint(user_api) # register api routes
 app.register_blueprint(player_api)
 app.register_blueprint(app_projects) # register app pages
 
+# KASM Servers
+KASM_SERVERS = {
+    "https://kasm100.nighthawkcodingsociety.com": {
+        "api_key": "UmJYml6vlGtu",
+        "api_key_secret": "UKPCWqwjilQeyXR2tnjw3sixZqc88W28"
+    },
+    "https://kasm101.nighthawkcodingsociety.com": {
+        "api_key": "nbjIDH6zO5LJ",
+        "api_key_secret": "rF4bS7QJUrbttxyzsHAEVT6mYpOor8ty"
+    },
+    "https://kasm102.nighthawkcodingsociety.com": {
+        "api_key": "MUGRY8VuxFf3",
+        "api_key_secret": "QRdDGD30myezBtDvlkOtYlWCinUdNBx9"
+    },
+    # Add more servers here
+}
+
+def get_users(api_key, api_key_secret, api_base_url):
+    endpoint = f"{api_base_url}/api/public/get_users"
+    headers = {
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "api_key": api_key,
+        "api_key_secret": api_key_secret
+    }
+    response = requests.post(endpoint, json=payload, headers=headers)
+
+    if response.status_code != 200:
+        print(f"Error getting users from {api_base_url}")
+        return []
+
+    users_list = response.json().get("users", [])
+    filtered_users = [user for user in users_list if "@kasm.local" not in user.get("username")]
+    return filtered_users
+
+
+
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
     # note that we set the 404 status explicitly
@@ -49,8 +88,20 @@ def users():
     table = User.query.all()
     return render_template("users.html", table=table)
 
+
+@app.route('/assignments')
+def assignments():
+    users_per_server = {}
+    for server, server_info in KASM_SERVERS.items():
+        api_key = server_info["api_key"]
+        api_key_secret = server_info["api_key_secret"]
+        users = get_users(api_key, api_key_secret, server)
+        users_per_server[server] = [user["username"] for user in users]
+
+    return render_template('assignments.html', users_per_server=users_per_server)
+
 @app.before_first_request
-def activate_job():  # activate these items 
+def activate_job():  # activate these items
     initJokes()
     initUsers()
     initPlayers()
