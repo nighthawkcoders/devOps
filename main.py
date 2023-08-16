@@ -6,7 +6,6 @@ import requests  # import render_template from "public" flask libraries
 import boto3
 import os
 from dotenv import load_dotenv
-load_dotenv()  # Load environment variables from .env file
 # import "packages" from "this" project
 from __init__ import app,db  # Definitions initialization
 from model.jokes import initJokes
@@ -39,20 +38,7 @@ AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
 AWS_REGION = "us-west-2"  # Change to your desired region
 
-ec2_client = boto3.client(
-    "ec2", aws_access_key_id=AWS_ACCESS_KEY,
-    aws_secret_access_key=AWS_SECRET_KEY,
-    region_name=AWS_REGION
-)
 
-# KASM Servers
-KASM_SERVERS = {
-    "https://kasm100.nighthawkcodingsociety.com": {
-        "api_key": os.environ.get("KASM_100_API_KEY"),
-        "api_key_secret": os.environ.get("KASM_100_API_KEY_SECRET")
-    },
-    # Add more servers here
-}
 
 def get_users(api_key, api_key_secret, api_base_url):
     endpoint = f"{api_base_url}/api/public/get_users"
@@ -105,6 +91,14 @@ def assignments():
 
     return render_template('assignments.html', users_per_server=users_per_server)
 
+load_dotenv()  # Load environment variables from .env file
+
+ec2_client = boto3.client(
+    "ec2", aws_access_key_id=AWS_ACCESS_KEY,
+    aws_secret_access_key=AWS_SECRET_KEY,
+    region_name=AWS_REGION
+)
+
 @app.route("/servers")
 def servers():
     response = ec2_client.describe_instances(Filters=[{"Name": "tag:Name", "Values": ["Kasm*"]}])
@@ -112,9 +106,13 @@ def servers():
     instances = []
     for reservation in response["Reservations"]:
         for instance in reservation["Instances"]:
+            # Find the "Domain" tag value
+            domain_tag = next((tag for tag in instance["Tags"] if tag["Key"] == "Domain"), None)
+            domain = domain_tag["Value"] if domain_tag else "Unknown Domain"
+
             instances.append({
                 "InstanceId": instance["InstanceId"],
-                "DisplayName": instance["Tags"][0]["Value"],
+                "DisplayName": domain,
                 "State": instance["State"]["Name"],
                 # Add more details as needed
             })
