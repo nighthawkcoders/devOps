@@ -26,7 +26,7 @@ class UserAPI:
             uid = body.get('uid')
             if uid is None or len(uid) < 2:
                 return {'message': f'User ID is missing, or is less than 2 characters'}, 400
-            # look for password and dob
+            # look for password
             password = body.get('password')
 
             ''' #1: Key code block, setup USER OBJECT '''
@@ -37,6 +37,8 @@ class UserAPI:
             # set password if provided
             if password is not None:
                 uo.set_password(password)
+            # set server request status    
+            uo.server_needed = body.get('server_needed')
             
             ''' #2: Key Code block to add user to database '''
             # create user in database
@@ -65,9 +67,11 @@ class UserAPI:
             name = body.get('name')
             if name:
                 user.name = name
+                
             uid = body.get('uid')
             if uid:  
                 user.uid = uid
+                
             user.server_needed = body.get('server_needed')
 
             ''' Commit changes to the database '''
