@@ -79,6 +79,12 @@ def users():
     table = User.query.all()
     return render_template("users.html", table=table)
 
+@app.route('/server_users.csv')
+def server_users():
+    table = User.query.filter_by(_server_needed=True)
+    print(table)
+    return render_template("users.html", table=table)
+
 
 @app.route('/assignments')
 def assignments():
