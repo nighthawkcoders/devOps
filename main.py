@@ -1,7 +1,7 @@
 import threading
 
 # import "packages" from flask
-from flask import render_template
+from flask import render_template, Response
 import requests  # import render_template from "public" flask libraries
 import boto3
 import os
@@ -82,8 +82,11 @@ def users():
 @app.route('/server_users.csv')
 def server_users():
     table = User.query.filter_by(_server_needed=True)
-    print(table)
-    return render_template("users.html", table=table)
+    csv_str = "first_name,last_name"
+    for user in table:
+        first = user.first_name[0] if isinstance(user.first_name, list) else user.first_name
+        csv_str += "\n" + first + "," + user.last_name
+    return Response(csv_str, mimetype='text/csv')
 
 
 @app.route('/assignments')
