@@ -32,7 +32,7 @@ with open(LOG_FILE, 'w') as f:
 
 with open(LOG_FILE, 'a') as f:
     f.write("| First Name | Last Name | Username | Server | Status |\n")
-    f.write("| --- | --- | --- | --- |\n")
+    f.write("| --- | --- | --- | --- | --- |\n")
 
 
 def create_user(api_key, api_key_secret, user_data, api_base_url):
