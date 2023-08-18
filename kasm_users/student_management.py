@@ -81,6 +81,7 @@ def main():
                 "first_name": row['first_name'],
                 "last_name": row['last_name'],
                 "locked": False,
+                "password": "123Qwerty!",
                 "disabled": False
             }
 
