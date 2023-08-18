@@ -77,7 +77,7 @@ def main():
 
         for row in csv_reader:
             user_data = {
-                "username": row['ghid'],
+                "username": row['uid'],
                 "first_name": row['first_name'],
                 "last_name": row['last_name'],
                 "locked": False,
