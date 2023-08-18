@@ -82,10 +82,10 @@ def users():
 @app.route('/server_users.csv')
 def server_users():
     table = User.query.filter_by(_server_needed=True)
-    csv_str = "first_name,last_name"
+    csv_str = "uid, first_name,last_name"
     for user in table:
         first = user.first_name[0] if isinstance(user.first_name, list) else user.first_name
-        csv_str += "\n" + first + "," + user.last_name
+        csv_str += "\n" + user.uid + ","+ first + "," + user.last_name
     return Response(csv_str, mimetype='text/csv')
 
 
