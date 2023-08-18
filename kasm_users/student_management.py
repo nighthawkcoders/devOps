@@ -31,7 +31,7 @@ with open(LOG_FILE, 'w') as f:
     pass  # Clear the log file
 
 with open(LOG_FILE, 'a') as f:
-    f.write("| First Name | Last Name | Server | Status |\n")
+    f.write("| First Name | Last Name | Username | Server | Status |\n")
     f.write("| --- | --- | --- | --- |\n")
 
 
@@ -66,7 +66,7 @@ def get_users_count(api_key, api_key_secret, api_base_url):
 
 def log_status(user_data, api_base_url, status, log_file):
     with open(log_file, 'a') as f:
-        f.write(f"| {user_data['first_name']} | {user_data['last_name']} | {api_base_url} | {status} |\n")
+        f.write(f"| {user_data['first_name']} | {user_data['last_name']} | {user_data['username']} | {api_base_url} | {status} |\n")
 
 def main():
     global current_server_index  # Declare current_server_index as global
@@ -76,10 +76,8 @@ def main():
         csv_reader = csv.DictReader(csv_file)
 
         for row in csv_reader:
-            username = row['first_name'].lower() + row['last_name'].lower()
-
             user_data = {
-                "username": username,
+                "username": row['ghid'],
                 "first_name": row['first_name'],
                 "last_name": row['last_name'],
                 "locked": False,
@@ -93,6 +91,8 @@ def main():
                 if users_count < 0:
                     break  # Exit the loop if there's an issue with user count retrieval
 
+                if users_count == 5:
+                    break
                 if user_counts[api_base_url] < MAX_USERS_PER_SERVER and users_count < MAX_USERS_PER_SERVER:
                     response = create_user(KASM_SERVERS[api_base_url]['api_key'], KASM_SERVERS[api_base_url]['api_key_secret'], user_data, api_base_url)
                     status = response.get('status') if response.get('status') == 'success' else f"Error: {response.get('error_message')}"
