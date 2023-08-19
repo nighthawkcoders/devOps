@@ -27,10 +27,11 @@ server_list = list(KASM_SERVERS.keys())
 current_server_index = 0
 users_per_server = {server_url: [] for server_url in KASM_SERVERS}
 
-with open(LOG_FILE, 'a') as f:
-    f.write("| First Name | Last Name | Username | Server | Status |\n")
-    f.write("| --- | --- | --- | --- | --- |\n")
-
+# check if the log file exists, if not, create it
+if not os.path.exists(LOG_FILE):
+    with open(LOG_FILE, 'a') as f:
+        f.write("| First Name | Last Name | Username | Server | Status |\n")
+        f.write("| --- | --- | --- | --- | --- |\n")
 
 def create_user(api_key, api_key_secret, user_data, api_base_url):
     endpoint = f"{api_base_url}/api/public/create_user"
