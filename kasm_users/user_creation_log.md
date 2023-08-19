@@ -39,3 +39,4 @@
 | aanya |  | aanyaa22 | https://kasm102.nighthawkcodingsociety.com | Error: None |
 | Graham | Johnson | Grahamjohnson12 | https://kasm103.nighthawkcodingsociety.com | Error: None |
 | Gabriel | Hall | Gabhall | https://kasm104.nighthawkcodingsociety.com | Error: None |
+| Spencer | Lyons | Frogpants | https://kasm200.nighthawkcodingsociety.com | Error: None |
