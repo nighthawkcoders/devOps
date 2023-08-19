@@ -27,9 +27,6 @@ server_list = list(KASM_SERVERS.keys())
 current_server_index = 0
 users_per_server = {server_url: [] for server_url in KASM_SERVERS}
 
-with open(LOG_FILE, 'w') as f:
-    pass  # Clear the log file
-
 with open(LOG_FILE, 'a') as f:
     f.write("| First Name | Last Name | Username | Server | Status |\n")
     f.write("| --- | --- | --- | --- | --- |\n")
