@@ -93,7 +93,9 @@ def main():
                     break  # Exit the loop if there's an issue with user count retrieval
 
                 if users_count == 5:
-                    break
+                    current_server_index = (current_server_index + 1) % len(server_list)
+                    continue  # Move to the next server
+                    
                 if user_counts[api_base_url] < MAX_USERS_PER_SERVER and users_count < MAX_USERS_PER_SERVER:
                     response = create_user(KASM_SERVERS[api_base_url]['api_key'], KASM_SERVERS[api_base_url]['api_key_secret'], user_data, api_base_url)
                     status = response.get('status') if response.get('status') == 'success' else f"Error: {response.get('error_message')}"
