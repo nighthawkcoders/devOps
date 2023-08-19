@@ -34,3 +34,8 @@
 | Lindsay | Tang | Lin-cT | https://kasm104.nighthawkcodingsociety.com | Error: None |
 | Trystan | Schmits | Trystan-Schmits | https://kasm200.nighthawkcodingsociety.com | Error: None |
 | Anika | Bhatnagar | anikabhatnagar20 | https://kasm201.nighthawkcodingsociety.com | Error: None |
+| Arthur | Serrao | ArthurSerrao | https://kasm100.nighthawkcodingsociety.com | Error: None |
+| Mrs | Jones | JonesCTEsub | https://kasm101.nighthawkcodingsociety.com | Error: None |
+| aanya |  | aanyaa22 | https://kasm102.nighthawkcodingsociety.com | Error: None |
+| Graham | Johnson | Grahamjohnson12 | https://kasm103.nighthawkcodingsociety.com | Error: None |
+
