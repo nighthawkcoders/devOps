@@ -1,5 +1,6 @@
 import csv
 import requests
+import os
 
 KASM_SERVERS = {
     "https://kasm100.nighthawkcodingsociety.com": {
