@@ -6,6 +6,8 @@ import requests  # import render_template from "public" flask libraries
 import boto3
 import os
 from dotenv import load_dotenv
+from concurrent.futures import ThreadPoolExecutor
+
 # import "packages" from "this" project
 from __init__ import app,db  # Definitions initialization
 from model.jokes import initJokes
@@ -36,9 +38,6 @@ app.register_blueprint(app_projects) # register app pages
 
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
-AWS_REGION = "us-west-2"  # Change to your desired region
-
-
 
 def get_users(api_key, api_key_secret, api_base_url):
     endpoint = f"{api_base_url}/api/public/get_users"
@@ -102,31 +101,43 @@ def assignments():
 
 load_dotenv()  # Load environment variables from .env file
 
-ec2_client = boto3.client(
-    "ec2", aws_access_key_id=AWS_ACCESS_KEY,
-    aws_secret_access_key=AWS_SECRET_KEY,
-    region_name=AWS_REGION
-)
+def get_instances(region_name):
+    ec2_client = boto3.client(
+        "ec2",
+        aws_access_key_id=AWS_ACCESS_KEY,
+        aws_secret_access_key=AWS_SECRET_KEY,
+        region_name=region_name
+    )
 
-@app.route("/servers")
-def servers():
     response = ec2_client.describe_instances(Filters=[{"Name": "tag:Name", "Values": ["Kasm*"]}])
 
     instances = []
     for reservation in response["Reservations"]:
         for instance in reservation["Instances"]:
-            # Find the "Domain" tag value
             domain_tag = next((tag for tag in instance["Tags"] if tag["Key"] == "Domain"), None)
             domain = domain_tag["Value"] if domain_tag else "Unknown Domain"
 
             instances.append({
+                "Region": region_name,
                 "InstanceId": instance["InstanceId"],
                 "DisplayName": domain,
                 "State": instance["State"]["Name"],
-                # Add more details as needed
             })
 
+    return instances
+
+@app.route("/servers")
+def servers():
+    regions = boto3.client("ec2").describe_regions()["Regions"]
+
+    instances = []
+    with ThreadPoolExecutor() as executor:
+        for region in regions:
+            region_name = region["RegionName"]
+            instances.extend(executor.submit(get_instances, region_name).result())
+
     return render_template("servers.html", instances=instances)
+
 
 @app.before_first_request
 def activate_job():  # activate these items
