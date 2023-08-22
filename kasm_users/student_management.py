@@ -9,7 +9,8 @@ try:
         KASM_SERVERS = json.load(f)
 except:
     # file doesnt exist/malformed
-    pass
+    print("kasm.json file not found or malformed")
+    exit()
 
 LOG_FILE = "user_creation_log.md"
 DATA_FILE = "data.csv"
