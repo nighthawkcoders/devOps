@@ -4,8 +4,6 @@
 | Aditya | Ramesh | AdiBricks | https://kasm101.nighthawkcodingsociety.com | Error: None |
 | Aditya | Samavedam | AdityaSamavedam | https://kasm102.nighthawkcodingsociety.com | Error: None |
 | Gavin | Copley | GavinCopley | https://kasm103.nighthawkcodingsociety.com | Error: None |
-| Ninaad | Kiran | ninaadkiran | https://kasm104.nighthawkcodingsociety.com | Error: None |
-| Jason | Guan | JasonGuan1012 | https://kasm200.nighthawkcodingsociety.com | Error: None |
 | Ananya | Asudani | Ananya_A | https://kasm201.nighthawkcodingsociety.com | Error: None |
 | Aaron | Hsu | ah1234 | https://kasm202.nighthawkcodingsociety.com | Error: None |
 | Ashwin | V | Ashwinv93 | https://kasm203.nighthawkcodingsociety.com | Error: None |
@@ -41,3 +39,6 @@
 | Gabriel | Hall | Gabhall | https://kasm104.nighthawkcodingsociety.com | Error: None |
 | Spencer | Lyons | Frogpants | https://kasm200.nighthawkcodingsociety.com | Error: None |
 | Zafeer | Ahmed | ZafeerA123 | https://kasm201.nighthawkcodingsociety.com | Error: None |
+| Ninaad | Kiran | ninaadkiran | https://kasm300.nighthawkcodingsociety.com | Error: None |
+| Jason | Guan | JasonGuan1012 | https://kasm301.nighthawkcodingsociety.com | Error: None |
+| Gavin | D | shakeSphereStuff | https://kasm300.nighthawkcodingsociety.com | Error: None |
