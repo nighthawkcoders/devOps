@@ -3,53 +3,6 @@ import requests
 import os
 import json
 
-KASM_SERVERS = {
-    "https://kasm100.nighthawkcodingsociety.com": {
-        "api_key": "UmJYml6vlGtu",
-        "api_key_secret": "UKPCWqwjilQeyXR2tnjw3sixZqc88W28"
-    },
-    "https://kasm101.nighthawkcodingsociety.com": {
-        "api_key": "L1gkinqZtvbH",
-        "api_key_secret": "WAKK9Gcl6dNtP025P9DV7EOoeESEYiYH"
-    },
-    "https://kasm102.nighthawkcodingsociety.com": {
-        "api_key": "YbUxUHQ3Heg0",
-        "api_key_secret": "E4ntLqE25sN01NXYWgtQRgsAO35rlI3i"
-    },
-    "https://kasm103.nighthawkcodingsociety.com": {
-        "api_key": "MbGuTxwwfK22",
-        "api_key_secret": "8htknVwcD1IjNnKbCWdXYkiETBSvJIHC"
-    },
-    "https://kasm104.nighthawkcodingsociety.com": {
-        "api_key": "OyLpqUBgaMyu",
-        "api_key_secret": "8TtliJrG3yXqusYJUVlaXcN7vriDOvQi"
-    },
-    "https://kasm200.nighthawkcodingsociety.com": {
-        "api_key": "ra2TtCl5EIlO",
-        "api_key_secret": "zFnJiZXN1Q896ueKHOylVYzYSVqPyFlT"
-    },
-    "https://kasm201.nighthawkcodingsociety.com": {
-        "api_key": "kOH4x0On5Y7e",
-        "api_key_secret": "9URSa9HlpbltQuAKGXCUCuPdEM7hdtMC"
-    },
-    "https://kasm202.nighthawkcodingsociety.com": {
-        "api_key": "dTvDmN3qidW7",
-        "api_key_secret": "ApUtxuLmHzsqRu5BEmjAqjdwtNGUlAyo"
-    },
-    "https://kasm203.nighthawkcodingsociety.com": {
-        "api_key": "7ROHR5nCNG4o",
-        "api_key_secret": "j3n9gJhZaza8IW5FBRGnPy4sqvmkW3su"
-    },
-    "https://kasm300.nighthawkcodingsociety.com": {
-        "api_key": "moERAHkP0LEB",
-        "api_key_secret": "IERMN6c0NDKOTeEsxASb2vasify2tql5"
-    },
-    "https://kasm301.nighthawkcodingsociety.com": {
-        "api_key": "t1eAKEGd4GNE",
-        "api_key_secret": "CW5vSYtPu8LliT2ipKZifpbCzVsLpjA8"
-    },
-}
-
 ## update kasm servers from json file if it exists
 try:
     with open('../kasm.json') as f:

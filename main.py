@@ -1,10 +1,9 @@
-import threading
-
 # import "packages" from flask
 from flask import render_template, Response
 import requests  # import render_template from "public" flask libraries
 import boto3
 import os
+import json
 from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor
 
@@ -38,6 +37,14 @@ app.register_blueprint(app_projects) # register app pages
 
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
+
+try:
+    with open('./kasm.json') as f:
+        KASM_SERVERS = json.load(f)
+except:
+    # file doesnt exist/malformed
+    pass
+
 
 def get_users(api_key, api_key_secret, api_base_url):
     endpoint = f"{api_base_url}/api/public/get_users"
