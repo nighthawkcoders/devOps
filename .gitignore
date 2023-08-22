@@ -22,3 +22,5 @@ migrations
 .terraform.tfstate.lock.info
 terraform.*
 *.tfplan
+
+kasm.json

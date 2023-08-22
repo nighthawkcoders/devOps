@@ -1,6 +1,7 @@
 import csv
 import requests
 import os
+import json
 
 KASM_SERVERS = {
     "https://kasm100.nighthawkcodingsociety.com": {
@@ -48,6 +49,14 @@ KASM_SERVERS = {
         "api_key_secret": "CW5vSYtPu8LliT2ipKZifpbCzVsLpjA8"
     },
 }
+
+## update kasm servers from json file if it exists
+try:
+    with open('../kasm.json') as f:
+        KASM_SERVERS = json.load(f)
+except:
+    # file doesnt exist/malformed
+    pass
 
 LOG_FILE = "user_creation_log.md"
 DATA_FILE = "data.csv"
