@@ -25,6 +25,8 @@ from api.player import player_api
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
 
+from kasm_users.student_management import get_user_mappings
+
 
 # Initialize the SQLAlchemy object to work with the Flask app instance
 db.init_app(app)
@@ -38,6 +40,8 @@ app.register_blueprint(app_projects) # register app pages
 
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
+
+load_dotenv()  # Load environment variables from .env file
 
 def get_users(api_key, api_key_secret, api_base_url):
     endpoint = f"{api_base_url}/api/public/get_users"
@@ -76,7 +80,22 @@ def table():
 @app.route('/users/')
 def users():
     table = User.query.all()
+    print(table)
     return render_template("users.html", table=table)
+
+@app.route('/update_users_kasm')
+def update_kasm():
+    mappings = get_user_mappings()
+    for server, users in mappings.items():
+        for u in users:
+            print(u)
+            db_user = User.query.filter(User._uid.ilike(u)).first()
+            print(db_user)
+            if db_user != None:
+                print("yay")
+                db_user.kasm_server = server
+                db_user.update()
+    return "Update Completed"
 
 @app.route('/server_users.csv')
 def server_users():
@@ -98,8 +117,6 @@ def assignments():
         users_per_server[server] = [user["username"] for user in users]
 
     return render_template('assignments.html', users_per_server=users_per_server)
-
-load_dotenv()  # Load environment variables from .env file
 
 def get_instances(region_name):
     ec2_client = boto3.client(

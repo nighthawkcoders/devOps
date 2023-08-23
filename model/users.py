@@ -26,6 +26,7 @@ class User(db.Model):
     _uid = db.Column(db.String(255), unique=True, nullable=False)
     _password = db.Column(db.String(255), unique=False, nullable=False)
     _server_needed = db.Column(db.Boolean, default=False, nullable=False)
+    _kasm_server = db.Column(db.String(255), default="N/A", nullable=False)
     _active_classes = db.Column(db.String(255), default="none", nullable=False)
     _archived_classes = db.Column(db.String(255), default="none", nullable=False)
 
@@ -94,6 +95,16 @@ class User(db.Model):
     @server_needed.setter
     def server_needed(self, value):
         self._server_needed = value
+
+    # Getter method for _kasm_server
+    @property
+    def kasm_server(self):
+        return self._kasm_server
+
+    # setter method for _kasm_server
+    @kasm_server.setter
+    def kasm_server(self, value):
+        self._kasm_server = value
         
     # output content using str(object) in human readable form, uses getter
     # output content using json dumps, this is ready for API response
@@ -121,7 +132,8 @@ class User(db.Model):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "uid": self.uid,
-            "server_needed": self.server_needed
+            "server_needed": self.server_needed,
+            "kasm_server": self.kasm_server
         }
 
     # CRUD update: updates user name, password, phone
