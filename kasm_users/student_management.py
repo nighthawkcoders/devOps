@@ -5,7 +5,7 @@ import json
 
 ## update kasm servers from json file if it exists
 try:
-    with open(os.path.join(os.path.dirname(__file__), './kasm.json')) as f:
+    with open(os.path.join(os.path.dirname(__file__), '../kasm.json')) as f:
         KASM_SERVERS = json.load(f)
 except:
     # file doesnt exist/malformed
