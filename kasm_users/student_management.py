@@ -103,23 +103,5 @@ def main():
                 current_server_index = (current_server_index + 1) % len(server_list)
                 break  # Move to the next user
 
-def get_user_mappings():
-    mappings = {}
-    for server, server_info in KASM_SERVERS.items():
-        endpoint = f"{server}/api/public/get_users"
-        headers = {
-            "Content-Type": "application/json"
-        }
-        payload = {
-            "api_key": server_info["api_key"],
-            "api_key_secret": server_info["api_key_secret"]
-        }
-        response = requests.post(endpoint, json=payload, headers=headers)
-
-        users_list = response.json().get("users", [])
-        filtered_users = [user.get("username") for user in users_list if "@kasm.local" not in user.get("username")]
-        mappings[server] = filtered_users
-    return mappings
-
 if __name__ == "__main__":
     main()

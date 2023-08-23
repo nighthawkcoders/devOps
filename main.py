@@ -24,9 +24,6 @@ from api.player import player_api
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
 
-from kasm_users.student_management import get_user_mappings
-
-
 # Initialize the SQLAlchemy object to work with the Flask app instance
 db.init_app(app)
 
@@ -47,7 +44,8 @@ try:
         KASM_SERVERS = json.load(f)
 except:
     # file doesnt exist/malformed
-    pass
+    KASM_SERVERS = {}
+    print("Kasm Servers not avaliable")
 
 
 def get_users(api_key, api_key_secret, api_base_url):
@@ -69,7 +67,23 @@ def get_users(api_key, api_key_secret, api_base_url):
     filtered_users = [user for user in users_list if "@kasm.local" not in user.get("username")]
     return filtered_users
 
+def get_user_mappings():
+    mappings = {}
+    for server, server_info in KASM_SERVERS.items():
+        endpoint = f"{server}/api/public/get_users"
+        headers = {
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "api_key": server_info["api_key"],
+            "api_key_secret": server_info["api_key_secret"]
+        }
+        response = requests.post(endpoint, json=payload, headers=headers)
 
+        users_list = response.json().get("users", [])
+        filtered_users = [user.get("username") for user in users_list if "@kasm.local" not in user.get("username")]
+        mappings[server] = filtered_users
+    return mappings
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
@@ -95,11 +109,8 @@ def update_kasm():
     mappings = get_user_mappings()
     for server, users in mappings.items():
         for u in users:
-            print(u)
             db_user = User.query.filter(User._uid.ilike(u)).first()
-            print(db_user)
             if db_user != None:
-                print("yay")
                 db_user.kasm_server = server
                 db_user.update()
     return "Update Completed"
