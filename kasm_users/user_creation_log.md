@@ -18,7 +18,6 @@
 | Bhouvanamohini-Vrnda | Kanhye | BVrndaKanhye | https://kasm203.nighthawkcodingsociety.com | Error: None |
 | Gurshawn | Boparai | Gurbop | https://kasm100.nighthawkcodingsociety.com | Error: None |
 | Varaprassad | Nibhanupudi | nVarap | https://kasm101.nighthawkcodingsociety.com | Error: None |
-| Peyton | Leigh | peytonl11098 | https://kasm102.nighthawkcodingsociety.com | Error: None |
 | Andrew | Zaletski | andrewzcsse | https://kasm103.nighthawkcodingsociety.com | Error: None |
 | Dean | Phillips | DeanPhillips24 | https://kasm104.nighthawkcodingsociety.com | Error: None |
 | Nora | Ahadian | NoraTheTurtle | https://kasm200.nighthawkcodingsociety.com | Error: None |
@@ -42,3 +41,4 @@
 | Ninaad | Kiran | ninaadkiran | https://kasm300.nighthawkcodingsociety.com | Error: None |
 | Jason | Guan | JasonGuan1012 | https://kasm301.nighthawkcodingsociety.com | Error: None |
 | Gavin | D | shakeSphereStuff | https://kasm300.nighthawkcodingsociety.com | Error: None |
+| Ameer | Hussain | MEERIE | https://kasm300.nighthawkcodingsociety.com | Error: None |
