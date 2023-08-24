@@ -43,3 +43,23 @@ pip install -r requirements.txt
 - Infrastructure: AWS, Kasm Workspaces 
 - Tooling: Python, Terraform, AWS CLI, Python BOTO module, Kasm Developer API
 - SQL Database: User Database and APIs
+
+### Database Migration
+> In case of Schema change it is important to upgrade database as follows.  
+
+- Install flask app
+```bash
+export FLASK_APP=main
+export PYTHONPATH=.:$PYTHONPATH  # flask need . to find files
+flask db init
+flask db upgrade
+```
+
+- It may be easiest to have a Docker file to do this on production environment.  We should backup database before schema upgrade
+
+```bash
+ENV FLASK_APP=main
+ENV PYTHONPATH=.:$PYTHONPATH
+RUN flask db init
+RUN flask db upgrade
+```
