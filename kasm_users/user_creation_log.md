@@ -43,3 +43,4 @@
 | Gavin | D | shakeSphereStuff | https://kasm300.nighthawkcodingsociety.com | Error: None |
 | Ameer | Hussain | MEERIE | https://kasm300.nighthawkcodingsociety.com | Error: None |
 | Anthony | Yoo | yooanthony | https://kasm301.nighthawkcodingsociety.com | Error: None |
+| Andrew | Chang | andri-c | https://kasm301.nighthawkcodingsociety.com | Error: None |
