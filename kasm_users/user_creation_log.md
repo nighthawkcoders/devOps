@@ -12,7 +12,6 @@
 | Kyle | Liang | BearytheGreenBear | https://kasm102.nighthawkcodingsociety.com | Error: None |
 | Emaad | Mir | Emaad-Mir | https://kasm103.nighthawkcodingsociety.com | Error: None |
 | Abby | Rinderknecht | abbyr26 | https://kasm104.nighthawkcodingsociety.com | Error: None |
-| Eashaan | Reddy | eashaan-r | https://kasm200.nighthawkcodingsociety.com | Error: None |
 | Ian | Manangan | Im2008 | https://kasm201.nighthawkcodingsociety.com | Error: None |
 | Matthew | Borabo | MatthewBorabo | https://kasm202.nighthawkcodingsociety.com | Error: None |
 | Bhouvanamohini-Vrnda | Kanhye | BVrndaKanhye | https://kasm203.nighthawkcodingsociety.com | Error: None |
@@ -44,3 +43,4 @@
 | Ameer | Hussain | MEERIE | https://kasm300.nighthawkcodingsociety.com | Error: None |
 | Anthony | Yoo | yooanthony | https://kasm301.nighthawkcodingsociety.com | Error: None |
 | Andrew | Chang | andri-c | https://kasm301.nighthawkcodingsociety.com | Error: None |
+| Eashaan | Reddy | eashaan-r | https://kasm202.nighthawkcodingsociety.com | Error: None |
