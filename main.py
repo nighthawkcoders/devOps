@@ -101,7 +101,6 @@ def table():
 @app.route('/users/')
 def users():
     table = User.query.all()
-    print(table)
     return render_template("users.html", table=table)
 
 @app.route('/update_users_kasm')
