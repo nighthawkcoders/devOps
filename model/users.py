@@ -26,7 +26,7 @@ class User(db.Model):
     _uid = db.Column(db.String(255), unique=True, nullable=False)
     _password = db.Column(db.String(255), unique=False, nullable=False)
     _server_needed = db.Column(db.Boolean, default=False, nullable=False)
-    _kasm_server = db.Column(db.String(255), default="N/A", nullable=False)
+    _kasm_server = db.Column(db.String(255), default="N/A", server_default="N/A", nullable=False)
     _active_classes = db.Column(db.String(255), default="none", nullable=False)
     _archived_classes = db.Column(db.String(255), default="none", nullable=False)
 
