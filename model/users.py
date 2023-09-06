@@ -31,11 +31,13 @@ class User(db.Model):
     _archived_classes = db.Column(db.String(255), default="none", nullable=False)
 
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, name, uid, password="123Qwerty!", server_needed=False):
+    def __init__(self, name, uid, password="123Qwerty!", server_needed=False, active_classes='', archived_classes=''):
         self._name = name    # variables with self prefix become part of the object, 
         self._uid = uid
         self.set_password(password)
         self._server_needed = server_needed
+        self._active_classes = active_classes
+        self._archived_classes = archived_classes
 
     # name getter methods, extracts name from object
     @property
@@ -105,6 +107,26 @@ class User(db.Model):
     @kasm_server.setter
     def kasm_server(self, value):
         self._kasm_server = value
+
+    # getter for _active_classes
+    @property
+    def active_classes(self):
+        return self._active_classes
+    
+    # setter for _active_classes
+    @active_classes.setter
+    def active_classes(self, value):
+        self._active_classes = value
+
+    # getter for _archived_classes
+    @property
+    def archived_classes(self):
+        return self._archived_classes
+    
+    # setter for _archived_classes
+    @archived_classes.setter
+    def archived_classes(self, value):
+        self._archived_classes = value
         
     # output content using str(object) in human readable form, uses getter
     # output content using json dumps, this is ready for API response
@@ -133,12 +155,14 @@ class User(db.Model):
             "last_name": self.last_name,
             "uid": self.uid,
             "server_needed": self.server_needed,
-            "kasm_server": self.kasm_server
+            "kasm_server": self.kasm_server,
+            "active_classes": self.active_classes,
+            "archived_classes": self.archived_classes,
         }
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, name="", uid="", password=""):
+    def update(self, name="", uid="", password="", active_classes="", archived_classes=""):
         """only updates values with length"""
         if len(name) > 0:
             self.name = name
@@ -146,6 +170,10 @@ class User(db.Model):
             self.uid = uid
         if len(password) > 0:
             self.set_password(password)
+        if len(active_classes) > 0:
+            self.active_classes = active_classes
+        if len(archived_classes) > 0:
+            self.archived_classes = archived_classes
         db.session.commit()
         return self
 
@@ -166,10 +194,10 @@ def initUsers():
         """Create database and tables"""
         db.create_all()
         """Tester data for table"""
-        u1 = User(name='Thomas Edison', uid='toby', password='123toby', server_needed=True)
-        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko')
+        u1 = User(name='Thomas Edison', uid='toby', password='123toby', server_needed=True, active_classes="APCSP", archived_classes="")
+        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', active_classes="APCSA", archived_classes="APCSP")
         u3 = User(name='Alexander Graham Bell', uid='lex')
-        u4 = User(name='Grace Hopper', uid='hop', password='123hop', server_needed=True)
+        u4 = User(name='Grace Hopper', uid='hop', password='123hop', server_needed=True, active_classes="CSSE", archived_classes="")
         u5 = User(name='Pele', uid='king')
 
         users = [u1, u2, u3, u4, u5]

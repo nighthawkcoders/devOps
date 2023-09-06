@@ -15,6 +15,8 @@
                     <th>Name</th>
                     <th>Server Needed?</th>
                     <th>KASM Server</th>
+                    <th>Active Class(es)</th>
+                    <th>Archived Classes</th>
                 </tr>
                 </thead>
             <tbody>
@@ -27,6 +29,8 @@
                     <td>{{ row['name'] }}</td>
                     <td>{{ row['server_needed'] }}</td>
                     <td>{{ row['kasm_server'] }}</td>
+                    <td>{{ row['active_classes'] }}</td>
+                    <td>{{ row['archived_classes'] }}</td>
                 </tr>
             {% endfor %}
             </tbody>

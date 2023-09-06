@@ -29,9 +29,17 @@ class UserAPI:
             # look for password
             password = body.get('password')
 
+            active_classes = body.get('active_classes')
+            if active_classes is None or len(active_classes) == 0:
+                return {'message': 'Active class is missing'}, 400
+
+            archived_classes = body.get('archived_classes')
+
             ''' #1: Key code block, setup USER OBJECT '''
             uo = User(name=name, 
-                      uid=uid)
+                      uid=uid,
+                      active_classes=active_classes,
+                      archived_classes=archived_classes)
             
             ''' Additional garbage error checking '''
             # set password if provided
@@ -73,6 +81,9 @@ class UserAPI:
                 user.uid = uid
                 
             user.server_needed = body.get('server_needed')
+
+            user.active_classes = body.get('active_classes')
+            user.archived_classes = body.get('archived_classes')
 
             ''' Commit changes to the database '''
             user.update()
