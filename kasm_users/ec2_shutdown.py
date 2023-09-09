@@ -2,12 +2,11 @@ import boto3
 from datetime import datetime, time
 from dotenv import load_dotenv
 import os
+load_dotenv()  # Load environment variables from .env file
 
 # AWS credentials
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
-
-load_dotenv()  # Load environment variables from .env file
 
 # Get all available regions
 ec2 = boto3.client(
