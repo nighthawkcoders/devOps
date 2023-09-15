@@ -135,6 +135,27 @@ def assignments():
 
     return render_template('assignments.html', users_per_server=users_per_server)
 
+@app.route('/create_users')
+def create_users():
+    users = User.query.all()
+    iam = boto3.client(
+        "iam",
+        aws_access_key_id=AWS_ACCESS_KEY,
+        aws_secret_access_key=AWS_SECRET_KEY,
+    )
+
+    for user in users:
+        print(user.uid)
+
+        try:
+            # check if the user alread exists
+            iam.get_user(UserName=user.uid)
+        except iam.exceptions.NoSuchEntityException:
+            iam.create_user(UserName=user.uid)
+            iam.add_user_to_group(UserName=user, GroupName="Student")
+
+    return "Completed"
+
 def get_instances(region_name):
     ec2_client = boto3.client(
         "ec2",
