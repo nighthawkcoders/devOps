@@ -63,3 +63,11 @@ ENV PYTHONPATH=.:$PYTHONPATH
 RUN flask db init
 RUN flask db upgrade
 ```
+
+# Scripts
+## Creating AWS Users
+- GET /create_users, it will create AWS users from the GH ids in database if they don't exist
+## Updating KASM servers in datbaase
+- GET /update_users_kasm, it will find the KASM server for each user in the database and update their DB Entry
+## Migrating Database
+- ./migrate.sh
