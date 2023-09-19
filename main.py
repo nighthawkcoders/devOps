@@ -2,6 +2,7 @@
 from flask import render_template, Response
 import requests  # import render_template from "public" flask libraries
 import boto3
+import botocore
 import os
 import json
 from dotenv import load_dotenv
@@ -147,17 +148,19 @@ def create_users():
     )
 
     for user in users:
-        print(user.uid)
-
         try:
             # check if the user already exists
             iam.get_user(UserName=user.uid)
         except iam.exceptions.NoSuchEntityException:
-            print(iam.create_user(UserName=user.uid))
+            piam.create_user(UserName=user.uid))
             time.sleep(.100)
-            print(iam.add_user_to_group(UserName=user.uid, GroupName="Student"))
+            iam.add_user_to_group(UserName=user.uid, GroupName="Student")
             time.sleep(.100)
-            print(iam.create_login_profile(UserName=user.uid, Password="123Qwerty!", PasswordResetRequired=True))
+            iam.create_login_profile(UserName=user.uid, Password="123Qwerty!", PasswordResetRequired=True)
+        except botocore.exceptions.ClientError as e:
+            print("Error with the following user")
+            print(user.uid)
+            print(e)
 
     return "Completed"
 
