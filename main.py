@@ -148,11 +148,12 @@ def create_users():
         print(user.uid)
 
         try:
-            # check if the user alread exists
+            # check if the user already exists
             iam.get_user(UserName=user.uid)
         except iam.exceptions.NoSuchEntityException:
             iam.create_user(UserName=user.uid)
             iam.add_user_to_group(UserName=user, GroupName="Student")
+            iam.create_login_profile(UserName=user, Password="123Qwerty!", PasswordResetRequired=True)
 
     return "Completed"
 
