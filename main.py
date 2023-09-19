@@ -152,7 +152,7 @@ def create_users():
             # check if the user already exists
             iam.get_user(UserName=user.uid)
         except iam.exceptions.NoSuchEntityException:
-            piam.create_user(UserName=user.uid))
+            iam.create_user(UserName=user.uid)
             time.sleep(.100)
             iam.add_user_to_group(UserName=user.uid, GroupName="Student")
             time.sleep(.100)
