@@ -24,6 +24,8 @@ from api.player import player_api
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
 
+import time
+
 # Initialize the SQLAlchemy object to work with the Flask app instance
 db.init_app(app)
 
@@ -151,9 +153,11 @@ def create_users():
             # check if the user already exists
             iam.get_user(UserName=user.uid)
         except iam.exceptions.NoSuchEntityException:
-            iam.create_user(UserName=user.uid)
-            iam.add_user_to_group(UserName=user, GroupName="Student")
-            iam.create_login_profile(UserName=user, Password="123Qwerty!", PasswordResetRequired=True)
+            print(iam.create_user(UserName=user.uid))
+            time.sleep(.100)
+            print(iam.add_user_to_group(UserName=user.uid, GroupName="Student"))
+            time.sleep(.100)
+            print(iam.create_login_profile(UserName=user.uid, Password="123Qwerty!", PasswordResetRequired=True))
 
     return "Completed"
 
