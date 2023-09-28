@@ -1,5 +1,5 @@
 # import "packages" from flask
-from flask import render_template, Response
+from flask import render_template, Response, redirect, url_for
 import requests  # import render_template from "public" flask libraries
 import boto3
 import botocore
@@ -7,6 +7,7 @@ import os
 import json
 from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import unquote
 
 # import "packages" from "this" project
 from __init__ import app,db  # Definitions initialization
@@ -134,9 +135,75 @@ def assignments():
         api_key = server_info["api_key"]
         api_key_secret = server_info["api_key_secret"]
         users = get_users(api_key, api_key_secret, server)
-        users_per_server[server] = [user["username"] for user in users]
-
+        server = server.replace("https://", "")
+        users_per_server[server] = users
     return render_template('assignments.html', users_per_server=users_per_server)
+
+
+
+@app.route('/delete/<server>/<username>', methods=['POST'])
+def delete_user(server, username):
+    print(server)
+    print(username)
+    # add https to server if not there
+    server = "https://" + server
+    if server in KASM_SERVERS:
+        api_key = KASM_SERVERS[server]["api_key"]
+        api_key_secret = KASM_SERVERS[server]["api_key_secret"]
+        api_base_url = server
+
+        # Get the user_id based on the username
+        user_id = get_user_id(api_key, api_key_secret, api_base_url, username)
+        print(user_id)
+        if user_id:
+            # Construct the API endpoint for user deletion
+            endpoint = f"{api_base_url}/api/public/delete_user"
+
+            # Construct the payload with API key, API key secret, and target user_id
+            payload = {
+                "api_key": api_key,
+                "api_key_secret": api_key_secret,
+                "target_user": {
+                    "user_id": user_id
+                },
+                "force": True  # You can change this as needed
+            }
+
+            # Send a DELETE request to the Kasm API
+            response = requests.post(endpoint, json=payload)
+
+            # Check the response and handle any errors
+            if response.status_code == 200:
+                # User deleted successfully, handle success
+                print(f"User {username} deleted successfully!", 'success')
+            else:
+                # Handle error cases, e.g., API error
+                print(f"Error deleting user {username}: {response.text}", 'error')
+        else:
+            # Handle the case where user_id is not found
+            print(f"User {username} not found in {server}", 'error')
+
+    return redirect(url_for('assignments'))
+
+def get_user_id(api_key, api_key_secret, api_base_url, username):
+    endpoint = f"{api_base_url}/api/public/get_users"
+    headers = {
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "api_key": api_key,
+        "api_key_secret": api_key_secret
+    }
+
+    response = requests.post(endpoint, json=payload, headers=headers)
+
+    if response.status_code == 200:
+        users = response.json().get("users", [])
+        for user in users:
+            if user.get("username") == username:
+                return user.get("user_id")
+
+    return None
 
 @app.route('/create_users')
 def create_users():

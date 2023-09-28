@@ -13,6 +13,7 @@
     <tr>
       <th>Server</th>
       <th>Username</th>
+      <th>Last Session</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -20,10 +21,12 @@
     {% for server, users in users_per_server.items() %} {% for user in users %}
     <tr>
       <td>{{ server }}</td>
-      <td>{{ user }}</td>
+      <td>{{ user["username"]  }}</td>
+      <td>{{ user["last_session"] }}</td>
       <td>
-        <a href="https://aadit.dev">Delete</a>
-        <a href="https://aadit.dev">Reset Password</a>
+        <form method="POST" action="{{ url_for('delete_user', server=server, username=user['username']) }}">
+          <button type="submit">Delete</button>
+      </form>
       </td>
     </tr>
     {% endfor %} {% endfor %}
