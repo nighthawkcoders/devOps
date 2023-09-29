@@ -52,19 +52,21 @@
   <script>
     $("#assignments").DataTable();
 
-    const deleteButtons = document.querySelectorAll(".delete-btn");
-    deleteButtons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        // Show the password input field for this row
-        const passwordInput =
-          button.parentElement.querySelector(".password-input");
-        passwordInput.style.display = "block";
+    document
+      .querySelector("#assignments tbody")
+      .addEventListener("click", function (event) {
+        if (event.target.classList.contains("delete-btn")) {
+          // Show the password input field for this row
+          const passwordInput =
+            event.target.parentElement.querySelector(".password-input");
+          passwordInput.style.display = "block";
 
-        // Show the submit button for this row
-        const submitButton = button.parentElement.querySelector(".submit-btn");
-        submitButton.style.display = "block";
+          // Show the submit button for this row
+          const submitButton =
+            event.target.parentElement.querySelector(".submit-btn");
+          submitButton.style.display = "block";
+        }
       });
-    });
   </script>
 </div>
 {% endblock %}
