@@ -25,11 +25,24 @@
         <td>{{ user["username"] }}</td>
         <td>{{ user["last_session"] }}</td>
         <td>
+          <!-- Add a form to encapsulate the password input field and submit button -->
           <form
             method="POST"
             action="{{ url_for('delete_user', server=server, username=user['username']) }}"
           >
-            <button type="submit">Delete</button>
+            <button class="delete-btn" type="button">Delete</button>
+            <!-- Add a password input field (hidden by default) -->
+            <input
+              type="password"
+              class="password-input"
+              name="password"
+              placeholder="Enter Password"
+              style="display: none"
+            />
+            <!-- Add a submit button (hidden by default) -->
+            <button type="submit" class="submit-btn" style="display: none">
+              Submit
+            </button>
           </form>
         </td>
       </tr>
@@ -38,6 +51,20 @@
   </table>
   <script>
     $("#assignments").DataTable();
+
+    const deleteButtons = document.querySelectorAll(".delete-btn");
+    deleteButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        // Show the password input field for this row
+        const passwordInput =
+          button.parentElement.querySelector(".password-input");
+        passwordInput.style.display = "block";
+
+        // Show the submit button for this row
+        const submitButton = button.parentElement.querySelector(".submit-btn");
+        submitButton.style.display = "block";
+      });
+    });
   </script>
 </div>
 {% endblock %}

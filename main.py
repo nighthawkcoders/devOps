@@ -1,5 +1,5 @@
 # import "packages" from flask
-from flask import render_template, Response, redirect, url_for
+from flask import render_template, Response, redirect, url_for, request
 import requests  # import render_template from "public" flask libraries
 import boto3
 import botocore
@@ -42,6 +42,7 @@ load_dotenv()  # Load environment variables from .env file
 
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
 
 
 try:
@@ -159,6 +160,9 @@ def assignments():
 def delete_user(server, username):
     print(server)
     print(username)
+    password = request.form.get('password')
+    if password != ADMIN_PASSWORD:
+        return redirect(url_for('assignments'))
     # add https to server if not there
     server = "https://" + server
     if server in KASM_SERVERS:
