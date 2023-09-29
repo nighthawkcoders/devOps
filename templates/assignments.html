@@ -10,30 +10,44 @@
 <div class="px-5 py-5 mx-auto">
   <table id="assignments" class="table">
     <thead>
-    <tr>
-      <th>Server</th>
-      <th>Username</th>
-      <th>Last Session</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for server, users in users_per_server.items() %} {% for user in users %}
-    <tr>
-      <td>{{ server }}</td>
-      <td>{{ user["username"]  }}</td>
-      <td>{{ user["last_session"] }}</td>
-      <td>
-        <form method="POST" action="{{ url_for('delete_user', server=server, username=user['username']) }}">
-          <button type="submit">Delete</button>
-      </form>
-      </td>
-    </tr>
-    {% endfor %} {% endfor %}
+      <tr>
+        <th>Server</th>
+        <th>Username</th>
+        <th>Last Session</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for server, users in users_per_server.items() %} {% for user in users
+      %}
+      <tr>
+        <td>{{ server }}</td>
+        <td>{{ user["username"] }}</td>
+        <td class="last-session">{{ user["last_session"] }}</td>
+        <td>
+          <form
+            method="POST"
+            action="{{ url_for('delete_user', server=server, username=user['username']) }}"
+          >
+            <button type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %} {% endfor %}
     </tbody>
   </table>
   <script>
     $("#assignments").DataTable();
+    document.addEventListener("DOMContentLoaded", function () {
+      const lastSessionElements = document.querySelectorAll(".last-session");
+      lastSessionElements.forEach(function (element) {
+        const utcTimestamp = element.textContent;
+        const pstTimestamp = new Date(utcTimestamp);
+        element.textContent = pstTimestamp.toLocaleString("en-US", {
+          timeZone: "America/Los_Angeles",
+        });
+      });
+    });
   </script>
 </div>
 {% endblock %}
