@@ -10,3 +10,4 @@ Flask_Cors==3.0.10
 awscli
 boto3
 python-dotenv
+pytz
