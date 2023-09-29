@@ -23,7 +23,7 @@
       <tr>
         <td>{{ server }}</td>
         <td>{{ user["username"] }}</td>
-        <td class="last-session">{{ user["last_session"] }}</td>
+        <td>{{ user["last_session"] }}</td>
         <td>
           <form
             method="POST"
@@ -38,16 +38,6 @@
   </table>
   <script>
     $("#assignments").DataTable();
-    document.addEventListener("DOMContentLoaded", function () {
-      const lastSessionElements = document.querySelectorAll(".last-session");
-      lastSessionElements.forEach(function (element) {
-        const utcTimestamp = element.textContent;
-        const pstTimestamp = new Date(utcTimestamp);
-        element.textContent = pstTimestamp.toLocaleString("en-US", {
-          timeZone: "America/Los_Angeles",
-        });
-      });
-    });
   </script>
 </div>
 {% endblock %}

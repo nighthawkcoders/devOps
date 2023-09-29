@@ -8,7 +8,8 @@ import json
 from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import unquote
-
+from datetime import datetime
+import pytz
 # import "packages" from "this" project
 from __init__ import app,db  # Definitions initialization
 from model.jokes import initJokes
@@ -136,6 +137,19 @@ def assignments():
         api_key_secret = server_info["api_key_secret"]
         users = get_users(api_key, api_key_secret, server)
         server = server.replace("https://", "")
+        for user in users:
+            if "last_session" in user and user["last_session"]:
+                utc_timestamp = user["last_session"]
+                try:
+                    utc_timestamp = datetime.strptime(utc_timestamp, "%Y-%m-%d %H:%M:%S.%f")
+                    utc_timestamp = pytz.utc.localize(utc_timestamp)
+                    pst_timezone = pytz.timezone('America/Los_Angeles')
+                    pst_timestamp = utc_timestamp.astimezone(pst_timezone)
+                    user["last_session"] = pst_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                except ValueError:
+                    # Handle invalid timestamp format here
+                    user["last_session"] = "No Timestamp Found"
+
         users_per_server[server] = users
     return render_template('assignments.html', users_per_server=users_per_server)
 
