@@ -1,5 +1,6 @@
 ## Developer Operations for Nighthawk Students and Infrastructure
-TBD Runtime link: https://devops.nighthawkcodingsociety.com/
+[WIP Admin Server]9https://devops.nighthawkcodingsociety.com/0
+[Terraform Automation Plan](https://nighthawkcoders.github.io/teacher//devops/cloud_workspace)
 
 ### Primary way to get started
 > Quick steps that can be used with MacOS or WSL; this uses Python 3.9 or later as a prerequisite.
@@ -38,7 +39,7 @@ pip install -r requirements.txt
 ### Idea
 > The purpose of project is to serve APIs for managing Student and Classroom data.  It is the backend piece of a Full-Stack project.  There may be many frontend companions to the project, based off of year and curriculum.
 
-### Incubator Project, see [Terraform Automation Plan](https://nighthawkcoders.github.io/teacher//devops/cloud_workspace)
+### History of Project, see [Terraform Automation Plan](https://nighthawkcoders.github.io/teacher//devops/cloud_workspace)
 > Building Student Desktop workspaces in the cloud
 - Infrastructure: AWS, Kasm Workspaces 
 - Tooling: Python, Terraform, AWS CLI, Python BOTO module, Kasm Developer API
