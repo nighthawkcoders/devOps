@@ -1,5 +1,6 @@
 ## Developer Operations for Nighthawk Students and Infrastructure
-[WIP Admin Server]9https://devops.nighthawkcodingsociety.com/0
+[WIP Admin Server](https://devops.nighthawkcodingsociety.com/)
+
 [Terraform Automation Plan](https://nighthawkcoders.github.io/teacher//devops/cloud_workspace)
 
 ### Primary way to get started
