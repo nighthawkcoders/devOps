@@ -1,7 +1,7 @@
 ## Developer Operations for Nighthawk Students and Infrastructure
-[WIP Admin Server](https://devops.nighthawkcodingsociety.com/)
 
-[Terraform Automation Plan](https://nighthawkcoders.github.io/teacher//devops/cloud_workspace)
+- [WIP Admin Server](https://devops.nighthawkcodingsociety.com/)
+- [Terraform Automation Plan](https://nighthawkcoders.github.io/teacher//devops/cloud_workspace)
 
 ### Primary way to get started
 > Quick steps that can be used with MacOS or WSL; this uses Python 3.9 or later as a prerequisite.
