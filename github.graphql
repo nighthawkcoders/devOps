@@ -5,13 +5,12 @@
 
 query {
   safinsingh: user(login: "safinsingh") {
-    login
     contributionsCollection(from: "2023-10-06T00:00:00Z") {
       commitContributionsByRepository {
         repository {
           name
         }
-        contributions(last: 10) {
+        contributions(last: 100) {
           edges {
             node {
               occurredAt
@@ -23,13 +22,12 @@ query {
   }
   
   rjawesome: user(login: "rjawesome") {
-    login
     contributionsCollection(from: "2023-10-06T00:00:00Z") {
       commitContributionsByRepository {
         repository {
           name
         }
-        contributions(last: 10) {
+        contributions(last: 100) {
           edges {
             node {
               occurredAt
