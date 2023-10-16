@@ -1,0 +1,22 @@
+query {
+  # https://api.github.com/users/rjawesome to find ID
+  nodes(ids: ["MDQ6VXNlcjE2MDUzNTk3", "MDQ6VXNlcjQyMTIwOTA0"]) {
+    ... on User {
+      login
+      contributionsCollection(from: "2023-10-06T00:00:00Z") {
+        commitContributionsByRepository {
+          repository {
+            name
+          }
+          contributions(last: 10) {
+            edges {
+              node {
+                occurredAt
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
