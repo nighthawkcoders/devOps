@@ -17,6 +17,7 @@
                     <th>KASM Server</th>
                     <th>Active Class(es)</th>
                     <th>Archived Classes</th>
+                    <th>Latest Commits (last 10 days)</th>
                 </tr>
                 </thead>
             <tbody>
@@ -31,6 +32,7 @@
                     <td>{{ row['kasm_server'] }}</td>
                     <td>{{ row['active_classes'] }}</td>
                     <td>{{ row['archived_classes'] }}</td>
+                    <td>{{ row['latest_commits'] }}</td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -28,6 +28,7 @@ class User(db.Model):
     _kasm_server = db.Column(db.String(255), default="N/A", server_default="N/A", nullable=False)
     _active_classes = db.Column(db.String(255), default="none", nullable=False)
     _archived_classes = db.Column(db.String(255), default="none", nullable=False)
+    _latest_commmits = db.Column(db.Integer, default=0, nullable=False)
 
     # constructor of a User object, initializes the instance variables within object (self)
     def __init__(self, name, uid, password="123Qwerty!", server_needed=False, active_classes='', archived_classes=''):
@@ -37,6 +38,14 @@ class User(db.Model):
         self._server_needed = server_needed
         self._active_classes = active_classes
         self._archived_classes = archived_classes
+
+    @property
+    def latest_commits(self):
+        return self._latest_commmits
+    
+    @latest_commits.setter
+    def latest_commits(self, latest_commits):
+        self._latest_commmits = latest_commits
 
     # name getter methods, extracts name from object
     @property
@@ -193,9 +202,9 @@ def initUsers():
         """Create database and tables"""
         db.create_all()
         """Tester data for table"""
-        u1 = User(name='Thomas Edison', uid='toby', password='123toby', server_needed=True, active_classes="APCSP", archived_classes="")
-        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', active_classes="APCSA", archived_classes="APCSP")
-        u3 = User(name='Alexander Graham Bell', uid='lex')
+        u1 = User(name='Thomas Edison', uid='vardaansinha', password='123toby', server_needed=True, active_classes="APCSP", archived_classes="")
+        u2 = User(name='Nicholas Tesla', uid='safinsingh', password='123niko', active_classes="APCSA", archived_classes="APCSP")
+        u3 = User(name='Alexander Graham Bell', uid='rjawesome')
         u4 = User(name='Grace Hopper', uid='hop', password='123hop', server_needed=True, active_classes="CSSE", archived_classes="")
         u5 = User(name='Pele', uid='king')
 
