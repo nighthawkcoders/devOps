@@ -78,9 +78,11 @@ class GithubAPI:
                 users_map[username].latest_commits = count
                 users_map[username].update()
 
-    
-    # building RESTapi resources/interfaces, these routes are added to Web Server
-    api.add_resource(_Read, '/')
+    # make sure endpoint isn't really public
+    if 'ENDPOINT_PASSWORD' in os.environ:
+        api.add_resource(_Read, '/' + os.environ['ENDPOINT_PASSWORD'])
+    else:
+        api.add_resource(_Read, '/')
 
 
 if __name__ == '__main__':
