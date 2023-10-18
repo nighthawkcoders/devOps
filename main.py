@@ -16,6 +16,7 @@ from model.jokes import initJokes
 from model.users import User, initUsers
 from model.players import initPlayers
 
+load_dotenv()  # Load environment variables from .env file
 
 # setup APIs
 from api.covid import covid_api # Blueprint import api definition
@@ -40,7 +41,6 @@ app.register_blueprint(user_api) # register api routes
 app.register_blueprint(player_api)
 app.register_blueprint(app_projects) # register app pages
 app.register_blueprint(github_api)
-load_dotenv()  # Load environment variables from .env file
 
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
