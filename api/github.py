@@ -56,11 +56,22 @@ def parse_graphql_response(response):
 
 def get_stats(usernames):
     api_token = os.environ["GITHUB_TOKEN"]
-
-    query = generate_github_graphql_query(usernames)
-    response = send_github_graphql_request(query, api_token)
-    stats = parse_graphql_response(response)
-
+    stats = {}
+    
+    # Divide the usernames list into batches of 20
+    batch_size = 20
+    for i in range(0, len(usernames), batch_size):
+        batch_usernames = usernames[i:i + batch_size]
+        
+        query = generate_github_graphql_query(batch_usernames)
+        
+        # Try sending request
+        response = send_github_graphql_request(query, api_token)
+        
+        # Update the stats dictionary
+        batch_stats = parse_graphql_response(response)
+        stats.update(batch_stats)
+        
     return stats
 
 github_api = Blueprint('github_api', __name__,
@@ -73,7 +84,7 @@ class GithubAPI:
         def get(self):
             users = User.query.all()
             users_map = { user.uid : user for user in users }
-            stats = get_stats(users_map.keys())
+            stats = get_stats(list(users_map.keys()))
 
             for username, count in stats.items():
                 users_map[username].latest_commits = count
