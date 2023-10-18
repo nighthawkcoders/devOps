@@ -79,8 +79,8 @@ class GithubAPI:
                 users_map[username].update()
 
     # make sure endpoint isn't really public
-    if 'ENDPOINT_PASSWORD' in os.environ:
-        api.add_resource(_Read, '/' + os.environ['ENDPOINT_PASSWORD'])
+    if 'ADMIN_PASSWORD' in os.environ:
+        api.add_resource(_Read, '/' + os.environ['ADMIN_PASSWORD'])
     else:
         api.add_resource(_Read, '/')
 
