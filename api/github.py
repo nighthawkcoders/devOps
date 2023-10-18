@@ -47,6 +47,7 @@ def send_github_graphql_request(query, api_token):
     return response.json()
 
 def parse_graphql_response(response):
+    print(response)
     username_to_commits = {
       user_data["login"]: user_data["contributionsCollection"]["totalCommitContributions"]
       for user_data in response["data"].values() if user_data is not None
@@ -77,6 +78,8 @@ class GithubAPI:
             for username, count in stats.items():
                 users_map[username].latest_commits = count
                 users_map[username].update()
+
+            print('GH stats updated')
 
     # make sure endpoint isn't really public
     if 'ADMIN_PASSWORD' in os.environ:
