@@ -28,7 +28,7 @@ class User(db.Model):
     _kasm_server = db.Column(db.String(255), default="N/A", server_default="N/A", nullable=False)
     _active_classes = db.Column(db.String(255), default="none", nullable=False)
     _archived_classes = db.Column(db.String(255), default="none", nullable=False)
-    _latest_commmits = db.Column(db.Integer, default=0, server_default=0, nullable=False)
+    _latest_commmits = db.Column(db.Integer, default=0, server_default="0", nullable=False)
 
     # constructor of a User object, initializes the instance variables within object (self)
     def __init__(self, name, uid, password="123Qwerty!", server_needed=False, active_classes='', archived_classes=''):
