@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import json
 import requests
 import os
+import traceback
 from flask import Blueprint, jsonify  # jsonify creates an endpoint response object
 from flask_restful import Api, Resource # used for REST API building
 from model.users import *
@@ -82,15 +83,19 @@ api = Api(github_api)
 class GithubAPI:        
     class _Read(Resource):
         def get(self):
-            users = User.query.all()
-            users_map = { user.uid : user for user in users }
-            stats = get_stats(list(users_map.keys()))
-
-            for username, count in stats.items():
-                users_map[username].latest_commits = count
-                users_map[username].update()
-
-            print('GH stats updated')
+            try:
+                users = User.query.all()
+                users_map = { user.uid : user for user in users }
+                stats = get_stats(list(users_map.keys()))
+    
+                for username, count in stats.items():
+                    users_map[username].latest_commits = count
+                    users_map[username].update()
+    
+                print('GH stats updated')
+            except:
+                print(traceback.format_exc())
+                
 
     # make sure endpoint isn't really public
     if 'ADMIN_PASSWORD' in os.environ:
