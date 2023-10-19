@@ -22,7 +22,7 @@ def get_fragment():
 def generate_github_graphql_query(usernames):
     individual_queries = [
         f'''
-            {'a'+username}: user(login: "{username}") {{
+            user{i}: user(login: "{username}") {{
               ...userInfo
             }}
         '''
@@ -51,8 +51,8 @@ def send_github_graphql_request(query, api_token):
 
 def parse_graphql_response(response):
     username_to_commits = {
-        username[1:]: user_data["contributionsCollection"]["totalCommitContributions"]
-        for username, user_data in response["data"].items() if user_data is not None
+        user_data["login"].lower(): user_data["contributionsCollection"]["totalCommitContributions"]
+        for _, user_data in response["data"].items() if user_data is not None
     }
     return username_to_commits
 
@@ -86,7 +86,7 @@ class GithubAPI:
         def get(self):
             try:
                 users = User.query.all()
-                users_map = { user.uid : user for user in users }
+                users_map = { user.uid.lower() : user for user in users }
                 stats = get_stats(list(users_map.keys()))
     
                 for username, count in stats.items():
