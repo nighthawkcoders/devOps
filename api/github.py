@@ -92,9 +92,10 @@ class GithubAPI:
                     users_map[username].latest_commits = count
                     users_map[username].update()
     
-                print('GH stats updated')
+                print('GH stats updated', flush=True)
             except:
-                print(traceback.format_exc())
+                print(traceback.format_exc(), flush=True)
+                return {'message': 'Error occured'}
                 
 
     # make sure endpoint isn't really public
