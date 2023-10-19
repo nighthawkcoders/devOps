@@ -45,10 +45,11 @@ def send_github_graphql_request(query, api_token):
     }
     payload = json.dumps({"query": query})
     response = requests.post('https://api.github.com/graphql', headers=headers, data=payload)
+    print(response, flush=True)
+    print(query, flush=True)
     return response.json()
 
 def parse_graphql_response(response):
-    print(response)
     username_to_commits = {
         username: user_data["contributionsCollection"]["totalCommitContributions"]
         for username, user_data in response["data"].items() if user_data is not None
