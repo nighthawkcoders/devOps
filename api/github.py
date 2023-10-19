@@ -22,7 +22,7 @@ def get_fragment():
 def generate_github_graphql_query(usernames):
     individual_queries = [
         f'''
-            {username}: user(login: "{username}") {{
+            {'a'+username}: user(login: "{username}") {{
               ...userInfo
             }}
         '''
@@ -51,7 +51,7 @@ def send_github_graphql_request(query, api_token):
 
 def parse_graphql_response(response):
     username_to_commits = {
-        username: user_data["contributionsCollection"]["totalCommitContributions"]
+        username[1:]: user_data["contributionsCollection"]["totalCommitContributions"]
         for username, user_data in response["data"].items() if user_data is not None
     }
     return username_to_commits
@@ -97,7 +97,8 @@ class GithubAPI:
             except:
                 print(traceback.format_exc(), flush=True)
                 return {'message': 'Error occured'}
-                
+
+        return {'message': 'Completed'}
 
     # make sure endpoint isn't really public
     if 'ADMIN_PASSWORD' in os.environ:
