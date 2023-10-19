@@ -98,7 +98,7 @@ class GithubAPI:
                 print(traceback.format_exc(), flush=True)
                 return {'message': 'Error occured'}
 
-        return {'message': 'Completed'}
+            return {'message': 'Completed'}
 
     # make sure endpoint isn't really public
     if 'ADMIN_PASSWORD' in os.environ:
