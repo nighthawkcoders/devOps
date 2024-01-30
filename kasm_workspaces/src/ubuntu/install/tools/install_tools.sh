@@ -9,6 +9,7 @@ apt-get install -y \
     build-essential \
     ruby-full \
     jupyter-notebook \
+    sqlite3 \
     python3 \
     python3-pip \
     python-is-python3
