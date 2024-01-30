@@ -13,12 +13,11 @@ sudo apt-get update -y
 # Reference: https://Kasmweb.com/docs/latest/install/single_server_install.html
 echo "Kasm Single Server Download"
 cd /tmp
-curl -fsSL -O https://kasm-static-content.s3.amazonaws.com/kasm_release_1.13.1.421524.tar.gz
-tar -xf kasm_release_1.13.1.421524.tar.gz
+curl -O https://kasm-static-content.s3.amazonaws.com/kasm_release_1.14.0.3a7abb.tar.gz
+tar -xf kasm_release_1.14.0.3a7abb.tar.gz
 echo "Kasm Single Server Install"
 # Automate prompts for EULA, Swap Partition, Port, Passwords (TBD, remove passords testing passwords)
 sudo bash kasm_release/install.sh --accept-eula --swap-size 8192 -L 8443 --admin-password "123Qwerty!" --user-password "123Qwerty!"
-tar -xf Kasm_release_1.13.1.421524.tar.gz
 # 
 echo Nginx Installation
 sudo apt-get install -y nginx
