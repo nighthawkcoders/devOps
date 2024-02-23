@@ -1,5 +1,5 @@
 ## Kasm Workspaces Overview
-This Kasm worspaces project is intended to produce Desktop software and Development tools to meet students needs.  Kasm worspaces are dependent on AWS EC2 servers that are installed with Kasm workspaces "server"; that project is in another folder in this repository.
+This Kasm workspaces project is intended to produce Desktop software and Development tools to meet the student's needs.  Kasm workspaces are dependent on AWS EC2 servers that are installed with Kasm workspaces "server"; that project is in another folder in this repository.
 ```
 Kasm workspace software development workflow (-> action, * dependency)
 ---------------------------------------------------------------------
@@ -119,16 +119,15 @@ f7e680995ade: Layer already exists
 
 4. `Test` on Kasm
 - [Registry setup](https://github.com/nighthawkcoders/kasm_registry/tree/1.0/workspaces/CSSE-Ubuntu-Jammy)
-- Goto Kasm Sever (aka kasm100.nighthawkcodingsociety.com), login admin@kasm.local.   Select form left panel "Workspace", then "Workspace Registry".  "Add new" registry if "Del Norte HS Computer Science" not found. Obtain Registry Link [here](https://nighthawkcoders.github.io/kasm_registry).
+- Goto Kasm Sever (aka kasm100.nighthawkcodingsociety.com), login admin@kasm.local.   Select from the left panel "Workspace", then "Workspace Registry".  "Add new" registry if "Del Norte HS Computer Science" is not found. Obtain the Registry Link [here](https://nighthawkcoders.github.io/kasm_registry).
 - Click on small icons and install "Available Workspace".  This can take some time!!!
-- At top of screen select "WORKSPACES"
-install workspace from registry () is required for the pushed image to be visible on Kasm workspaces admin panel
-- run workpace
+- At the top of the screen select "WORKSPACES" and then install workspace from the registry () is required for the pushed image to be visible on the Kasm workspaces admin panel
+- run workplace
 
 ## Registry Data
-The registry has an instance of the devOps kasm_workspaces.
+The registry has an instance of the DevOps kasm_workspaces.
 - GitHub Pages Location: [kasm_registry GitHub Pages](https://nighthawkcoders.github.io/kasm_registry/1.0/)  On the server you can view attributes for a workspace in a friendly form.
-- GitHub location: [kasm_registry files](https://github.com/nighthawkcoders/kasm_registry)  The easier way make an new registry entry, for me, is to copy a folder in Workspaces and adjust entries for your specific branding.
+- GitHub location: [kasm_registry files](https://github.com/nighthawkcoders/kasm_registry)  The easier way to make a new registry entry, for me, is to copy a folder in Workspaces and adjust entries for your specific branding.
 
 ```json
 {
@@ -162,13 +161,13 @@ The registry has an instance of the devOps kasm_workspaces.
   }
 ```
 
-## Kasm Adminstration
-Manual configuations is required for the following.
+## Kasm Administration
+Manual configuration is required for the following.
 
 ### Workspace Server Configs
-Each time you peform a Terraform deployment you should make these adjusments to the server.
+Each time you perform a Terraform deployment you should make these adjustments to the server.
 
-- CPU and Memory override.   As admin.kasm.local user go to `Compute / Docker Agents` on left panel. Go to triple dots (...) on far right of listed Docker Agent override values as follows:
+- CPU and Memory override.   As admin.kasm.local user goes to `Compute` / Docker Agents on the left panel. Go to triple dots (...) on the far right of listed Docker Agent override values as follows:
 
 ```
 # Values have been increased according to use case expectations
@@ -177,7 +176,7 @@ CPU Cores: 2  ---> CPU Cores Override: 6
 Memory: 4110970880 ---> Memory Override: 12123456789
 ```
 
-- Proxy Port adjustement.  As admin.kasm.local user go to `Zones` on left panel.  Go to triple dots (...) on far right of listed Zone set the value as follows:
+- Proxy Port adjustment.  As admin.kasm.local user goes to `Zones` on the left panel.  Go to triple dots (...) on the far right of the listed Zone set the value as follows:
 
 ```
 # Nginx reverse proxy eliminates need for this setting
@@ -186,10 +185,10 @@ Proxy Port: 8443 ---> Proxy Port: 0
 ```
 
 ### Workspaces Configs
-Each time you setup a server you need to consider configure these items.
+Each time you set up a server you need to consider configuring these items.
 
 - Workspace Registry Add.  As admin.kasm.local user go to `Workspaces` on left panel and select `Workspace Registry`.  First, get link by following link and clicking [Workspace Registry Link](https://nighthawkcoders.github.io/kasm_registry/).  Add the copied link to the `Add New`.  The "Del Norte HS Computer Science" registry should appear, select small icons in box to filter.
-- Install Workspace.  Click in the box of the desired and pick Install to add the workspace to the servers workspace.  This can take a while "10 minutes".  After installation you need to make the following adustments to the installed workspace.   For each workspace, admin.kasm.local user go to `Workspaces` on left panel and observe catalog of installed workspace(s).  Go to triple dots (...) on far right of listed Workspace and set the value as follows:
+- Install Workspace.  Click in the box of the desired and pick Install to add the workspace to the server's workspace.  This can take a while "10 minutes".  After installation, you need to make the following adjustments to the installed workspace.   For each workspace, admin.kasm.local user goes to `Workspaces` on the left panel and observes the catalog of installed workspace(s).  Go to triple dots (...) on the far right of the listed Workspace and set the value as follows:
 ```
 # Persistent Home Directory (Kasm recommend different setting per workspace, here we use coders)
 
