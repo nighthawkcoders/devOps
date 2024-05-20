@@ -2,7 +2,7 @@
 
 # Oregon region
 provider "aws" {
-  region = "us-west-2"
+  region = "us-west-1"
 }
 
 # tool versions
@@ -30,14 +30,12 @@ locals {
 }
 
 # provision ec2 installation scripts
-data "template_file" "ec2_install" {
-  count = length(local.ec2_instances)
-  template = file("${path.module}/ec2_install.sh.tpl")
-
-  vars = {
-    SUBDOMAIN = local.ec2_instances[count.index]["ec2_Subdomain"]
-    DOMAIN    = local.ec2_instances[count.index]["ec2_Domain"]
-    EMAIL     = var.email
-  }
+locals {
+  ec2_install = [
+    for i in range(length(local.ec2_instances)) : templatefile("${path.module}/ec2_install.sh.tpl", {
+      SUBDOMAIN = local.ec2_instances[i]["ec2_Subdomain"]
+      DOMAIN    = local.ec2_instances[i]["ec2_Domain"]
+      EMAIL     = var.email
+    })
+  ]
 }
-
