@@ -99,7 +99,12 @@ class UserAPI:
             user.delete()
             return {'message': f'User with ID {id} has been deleted'}
 
-    
+    class _CRUD2025(Resource):  # User API operation for Create, Read.  THe Update, Delete methods need to be implemeented
+        def get(self): # Read Method
+            users = User.query.all()    # read/extract all users from database
+            json_ready = [user.read_2025() for user in users]  # prepare output in json
+            return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
+        
     class _Security(Resource):
 
         def post(self):
@@ -123,5 +128,6 @@ class UserAPI:
             
     # building RESTapi endpoint
     api.add_resource(_CRUD, '/', '/<int:id>')
+    api.add_resource(_CRUD2025, '/2025', '/<int:id>')
     api.add_resource(_Security, '/authenticate')
     

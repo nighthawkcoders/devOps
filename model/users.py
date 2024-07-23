@@ -167,6 +167,30 @@ class User(db.Model):
             "active_classes": self.active_classes,
             "archived_classes": self.archived_classes,
         }
+        
+    # CRUD read converts self to dictionary
+    # returns dictionary
+    def read_2025(self):
+        server_needed = False
+        if self.server_needed != "N/A":
+            server_needed = False
+            
+        sections = []
+        # Concatenate active_classes and archived_classes with a comma and split, then iterate
+        for section in (self.active_classes + "," + self.archived_classes).split(","):
+            if section:  # Check if section is not empty
+                if section.startswith("AP"):  # Check if section starts with "AP"
+                    section = section[2:]  # Remove "AP" from the start
+                sections.append({"abreviation": section})
+            
+        
+        return {
+            "name": self.name,
+            "uid": self.uid,
+            "role": "User",
+            "kasm_server_needed": server_needed,
+            "sections": sections, 
+        }
 
     # CRUD update: updates user name, password, phone
     # returns self
