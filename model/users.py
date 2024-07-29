@@ -171,17 +171,20 @@ class User(db.Model):
     # CRUD read converts self to dictionary
     # returns dictionary
     def read_2025(self):
-        server_needed = False
+        server_needed = self.server_needed 
         if self.server_needed != "N/A":
             server_needed = False
             
         sections = []
+        year = date.today().year
         # Concatenate active_classes and archived_classes with a comma and split, then iterate
         for section in (self.active_classes + "," + self.archived_classes).split(","):
             if section:  # Check if section is not empty
                 if section.startswith("AP"):  # Check if section starts with "AP"
                     section = section[2:]  # Remove "AP" from the start
                 sections.append({"abbreviation": section})
+                sections.append({"year": year})
+                year -= 1
             
         
         return {
