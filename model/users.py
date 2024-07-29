@@ -182,8 +182,7 @@ class User(db.Model):
             if section:  # Check if section is not empty
                 if section.startswith("AP"):  # Check if section starts with "AP"
                     section = section[2:]  # Remove "AP" from the start
-                sections.append({"abbreviation": section})
-                sections.append({"year": year})
+                sections.append({"abbreviation": section, "year": year})
                 year -= 1
             
         
