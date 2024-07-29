@@ -190,7 +190,7 @@ class User(db.Model):
             "name": self.name,
             "uid": self.uid,
             "role": "User",
-            "kasm_server_needed": server_needed,
+            "kasm_server_needed": self.server_needed,
             "sections": sections, 
         }
 
