@@ -5,6 +5,7 @@ Go to Kasm version control folder, then run these commands.
     - brew install kreuzwerker/taps/m1-terraform-provider-helper
     - m1-terraform-provider-helper activate
     - m1-terraform-provider-helper install hashicorp/template -v v2.2.0
+    - NOTE: This version of Devops now supports Apple Silicon M1-M3 so some of these commands may not be necessary. Use at your own risk, any issues please contact the original authors J Mortensen, T Patil, and R Jaiswal. All following commands are the same as the original DevOps project.
 - Run a `terraform init` to initialize the project.
 - Run a `terraform plan` to see what resources will be created.
 - If the plan looks good, run `terraform apply` to create the Nginx configurations.
@@ -25,8 +26,8 @@ Run these commands to build EC2 instances
 Create an instance, perform tests, and then come back quickly and destroy. 
 
 ```bash
-teraform init
-teraform plan -var="instances_start=2"
+terraform init
+terraform plan -var="instances_start=2"
 terraform apply -var="instances_start=2"
 # ... test time ...
 terraform destroy
@@ -38,7 +39,7 @@ The remaining portion of this is trying to make a plan, apply the plan, and dest
 Option A plan - Create 1 instance starting at 5.  
 
 ```bash
-teraform init
+terraform init
 terraform plan -var="instances_start=5" -out=opA.tfplan
 terraform apply opA.tfplan
 ```
@@ -66,7 +67,7 @@ mkdir -p ~/projects
 cd ~/projects
 git clone https://github.com/nighthawkcoders/devOps.git dop1
 cd ~/projects/dop1/kasm
-teraform init
+terraform init
 terraform plan -var="instances_start=50" -out=plan.tfplan
 terraform apply plan.tfplan
 terraform show
